@@ -1,0 +1,30 @@
+.page-body-wrapper{
+    margin-top: $navbar-height;
+    min-height: calc(100vh - #{$navbar-height});
+    display: flex;
+    flex-direction: row;
+    padding-left: 0;
+    padding-right: 0;
+
+    .main-panel-container{
+        transition: width .25s ease,margin .25s ease;
+        width: calc(100% - #{$sidepanel-max-width});
+        min-height: calc(100vh - #{$navbar-height});
+        display: flex;
+        flex-direction: column;
+        .main-pannel-wrapper{
+            background: #f2edf3;
+            padding: 2.75rem 2.25rem;
+            width: 100%;
+            flex-grow: 1;
+        }
+    }
+}
+
+.display-block{
+    display: block;
+}
+.display-none{
+    display: none;
+}
+
