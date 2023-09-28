@@ -2,12 +2,19 @@ import { Component } from "react";
 import { Link } from "react-router-dom";
 import { BiMenu, BiSearchAlt2, BiLogOutCircle } from "react-icons/bi";
 import { AiOutlineUser } from "react-icons/ai";
+import { connect } from "react-redux";
+import { authAction } from "../../../store/slice/auth-slice";
 
 class NavbarComponent extends Component {
   constructor() {
     super();
     this.state = { data: "" };
   }
+
+  handleLogout = () => {
+    this.props.logout();
+  };
+
   render() {
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12  fixed-top d-flex flex-row">
@@ -42,14 +49,19 @@ class NavbarComponent extends Component {
           {/*Resource From - https://csshint.com/css-search-boxes/ */}
           <div className="search-form-wrapper">
             <div className="navbar-main-search-form d-flex align-items-center">
-              <input type="search" placeholder="Search" class="search-input"></input>
-              <button class="search-button">
+              <input type="search" placeholder="Search" className="search-input"></input>
+              <button className="search-button">
                 <BiSearchAlt2 className="search-icon" />
               </button>
             </div>
           </div>
           <div className="control-section">
-            <div className="navbar-logout">
+            <div
+              className="navbar-logout"
+              onClick={() => {
+                this.handleLogout();
+              }}
+            >
               <BiLogOutCircle className="logout-icon" />
             </div>
             <div className="navbar-profile">
@@ -63,4 +75,17 @@ class NavbarComponent extends Component {
   }
 }
 
-export default NavbarComponent;
+const mapStateToPros = (state) => {
+  console.log("Store from login: ", state);
+  return {
+    auth: state.auth,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: (data) => dispatch(authAction.logOut()),
+  };
+};
+
+export default connect(mapStateToPros, mapDispatchToProps)(NavbarComponent);

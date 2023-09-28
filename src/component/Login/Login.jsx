@@ -2,6 +2,8 @@ import { Component } from "react";
 import { Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Formik, Field } from "formik";
 import * as yup from "yup";
+import { connect } from "react-redux";
+import { authAction } from "../../store/slice/auth-slice";
 
 const initialValues = {
   firstName: "",
@@ -76,6 +78,16 @@ class Login extends Component {
   }
   handleSubmitForm = (values) => {
     console.log(".......Values: ", values);
+
+    this.props.initiateLogin();
+
+    // ========= Login API ================//
+    setTimeout(() => {
+      console.log("Delayed for 5 second.");
+      this.props.successLogin();
+    }, 1000);
+
+    this.props.login("spring-eu56fe-security");
     this.props.history.push("/dashboard/home");
   };
   render() {
@@ -244,6 +256,7 @@ class Login extends Component {
                               this.setState({
                                 formType: "SIGN_UP",
                               });
+                              this.props.logout();
                             }}
                           >
                             Sign Up
@@ -265,4 +278,19 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToPros = (state) => {
+  return {
+    auth: state.auth,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    initiateLogin: (data) => dispatch(authAction.initiateLogin()),
+    successLogin: (data) => dispatch(authAction.successLogin()),
+    login: (data) => dispatch(authAction.login(data)),
+    logout: (data) => dispatch(authAction.logOut()),
+  };
+};
+
+export default connect(mapStateToPros, mapDispatchToProps)(Login);
