@@ -19,7 +19,7 @@ class NavbarComponent extends Component {
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12  fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <Link className="navbar-brand brand-logo" to="/">
+          <Link className="navbar-brand brand-logo" to="/dashboard/home">
             <svg
               width="128"
               height="146"

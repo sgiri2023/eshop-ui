@@ -76,22 +76,25 @@ class Login extends Component {
     super();
     this.state = { data: "", formType: "LOGIN", errorMessage: "" };
   }
-  handleSubmitForm = (values) => {
+  handleSubmitForm = (values, { setSubmitting }) => {
     console.log(".......Values: ", values);
 
     this.props.initiateLogin();
-
+    setSubmitting(true);
     // ========= Login API ================//
     setTimeout(() => {
       console.log("Delayed for 5 second.");
       this.props.successLogin();
+      // this.props.setLoginError("Login Failed");
+      this.props.login("spring-eu56fe-security");
+      this.props.history.push("/dashboard/home");
+      setSubmitting(true);
     }, 1000);
-
-    this.props.login("spring-eu56fe-security");
-    this.props.history.push("/dashboard/home");
   };
+
   render() {
     const { formType, errorMessage } = this.state;
+    const { loginErrorMessage, isLoginLoading } = this.props;
     return (
       <div className="login-container">
         <div className="login-card">
@@ -118,14 +121,16 @@ class Login extends Component {
                   setFieldError,
                   setFieldTouched,
                   setErrors,
+                  isSubmitting,
                 }) => (
                   <Form noValidate onSubmit={handleSubmit}>
                     <h1 className="title">{formType === "LOGIN" ? "Login" : "Sign Up"}</h1>
-                    {errorMessage && (
-                      <Alert key={"danger"} variant="danger">
-                        {errorMessage}
-                      </Alert>
-                    )}
+                    {errorMessage ||
+                      (loginErrorMessage && (
+                        <Alert key={"danger"} variant="danger">
+                          {errorMessage || loginErrorMessage}
+                        </Alert>
+                      ))}
                     {formType === "SIGN_UP" && (
                       <Row>
                         <Form.Group as={Col} md="6" controlId="validationFormik01">
@@ -222,7 +227,7 @@ class Login extends Component {
                     <Row className="control-section">
                       <Col xs={6} md={6}>
                         {formType === "LOGIN" ? (
-                          <Button type="submit" variant="primary">
+                          <Button type="submit" variant="primary" disabled={isSubmitting}>
                             Login
                           </Button>
                         ) : (
@@ -236,6 +241,7 @@ class Login extends Component {
                                 formType: "LOGIN",
                               });
                             }}
+                            disabled={isSubmitting}
                           >
                             Login
                           </Button>
@@ -243,7 +249,7 @@ class Login extends Component {
                       </Col>
                       <Col xs={6} md={6}>
                         {formType === "SIGN_UP" ? (
-                          <Button type="submit" variant="primary">
+                          <Button type="submit" variant="primary" disabled={isSubmitting}>
                             Sign Up
                           </Button>
                         ) : (
@@ -258,6 +264,7 @@ class Login extends Component {
                               });
                               this.props.logout();
                             }}
+                            disabled={isSubmitting}
                           >
                             Sign Up
                           </Button>
@@ -281,6 +288,7 @@ class Login extends Component {
 const mapStateToPros = (state) => {
   return {
     auth: state.auth,
+    loginErrorMessage: state.auth.loginErrorMessage,
   };
 };
 
@@ -290,6 +298,7 @@ const mapDispatchToProps = (dispatch) => {
     successLogin: (data) => dispatch(authAction.successLogin()),
     login: (data) => dispatch(authAction.login(data)),
     logout: (data) => dispatch(authAction.logOut()),
+    setLoginError: (data) => dispatch(authAction.setLoginError(data)),
   };
 };
 

@@ -10,11 +10,12 @@ import "./App.scss";
 class App extends Component {
   constructor() {
     super();
-    this.state = { data: "", token: "" };
+    this.state = { data: "", token: "", isLoading: false };
   }
   render() {
+    const { isLoading } = this.state;
     const { token, isLoginLoading, isLoggedIn } = this.props;
-    if (isLoginLoading === true) {
+    if (isLoading === true) {
       return (
         <div>
           <Loading />
