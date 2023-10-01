@@ -89,7 +89,7 @@ class Login extends Component {
       this.props.login("spring-eu56fe-security");
       this.props.history.push("/dashboard/home");
       setSubmitting(true);
-    }, 1000);
+    }, 2000);
   };
 
   render() {

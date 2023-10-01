@@ -57,16 +57,18 @@ class NavbarComponent extends Component {
           </div>
           <div className="control-section">
             <div
-              className="navbar-logout"
+              className="navbar-logout tooltip-custom"
               onClick={() => {
                 this.handleLogout();
               }}
             >
               <BiLogOutCircle className="logout-icon" />
+              <span class="tooltiptext">Logout</span>
             </div>
-            <div className="navbar-profile">
+            <div className="navbar-profile tooltip-custom">
               <AiOutlineUser className="profile-icon" />
               <span className="profile-name">{"Smith"}</span>
+              <span class="tooltiptext">Profile</span>
             </div>
           </div>
         </div>
