@@ -11,10 +11,6 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { GoHome } from "react-icons/go";
 
-// HiOutlineShoppingCart
-// CgProfile
-// GrHomeRounded
-// TbReportAnalytics
 class SidebarComponent extends Component {
   constructor() {
     super();
@@ -31,7 +27,7 @@ class SidebarComponent extends Component {
 
   render() {
     const { activeRoute } = this.state;
-    // this.props.appInfo.isSideBarExpand
+
     return (
       <nav
         className={`sidebar sidebar-offcanvas ${
@@ -61,7 +57,7 @@ class SidebarComponent extends Component {
                 >
                   {link.name.toLowerCase() === "profile" ? (
                     <CgProfile className="sidebar-menu-icon" />
-                  ) : link.name.toLowerCase() === "product" ? (
+                  ) : link.name.toLowerCase() === "products" ? (
                     <MdProductionQuantityLimits className="sidebar-menu-icon" />
                   ) : link.name.toLowerCase() === "report" ? (
                     <TbReportAnalytics className="sidebar-menu-icon" />
