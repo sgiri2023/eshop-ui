@@ -4,6 +4,7 @@ import { BiMenu, BiSearchAlt2, BiLogOutCircle } from "react-icons/bi";
 import { AiOutlineUser } from "react-icons/ai";
 import { connect } from "react-redux";
 import { authAction } from "../../../store/slice/auth-slice";
+import { appInfoAction } from "../../../store/slice/app-info";
 
 class NavbarComponent extends Component {
   constructor() {
@@ -15,9 +16,21 @@ class NavbarComponent extends Component {
     this.props.logout();
   };
 
+  handleSideBar = () => {
+    if (this.props.appInfo.isSideBarExpand === true) {
+      this.props.handleSidebarCollapse();
+    } else {
+      this.props.handleSidebarExpand();
+    }
+  };
+
   render() {
     return (
-      <nav className="navbar default-layout-navbar col-lg-12 col-12  fixed-top d-flex flex-row">
+      <nav
+        className={`navbar default-layout-navbar col-lg-12 col-12  fixed-top d-flex flex-row ${
+          this.props.appInfo.isSideBarExpand === true ? "expand-logo" : "collapse-logo"
+        }`}
+      >
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
           <Link className="navbar-brand brand-logo" to="/dashboard/home">
             <svg
@@ -44,7 +57,7 @@ class NavbarComponent extends Component {
         </div>
         <div className="navbar-menu-wrapper d-flex align-items-stretch">
           <div className="d-flex align-items-center menu-icon-wrapper">
-            <BiMenu className="navbar-menu-icon" />
+            <BiMenu className="navbar-menu-icon" onClick={this.handleSideBar} />
           </div>
           {/*Resource From - https://csshint.com/css-search-boxes/ */}
           <div className="search-form-wrapper">
@@ -81,12 +94,15 @@ const mapStateToPros = (state) => {
   console.log("Store from login: ", state);
   return {
     auth: state.auth,
+    appInfo: state.appInfo,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     logout: (data) => dispatch(authAction.logOut()),
+    handleSidebarExpand: (data) => dispatch(appInfoAction.handleExpand()),
+    handleSidebarCollapse: (data) => dispatch(appInfoAction.handleCollapse()),
   };
 };
 

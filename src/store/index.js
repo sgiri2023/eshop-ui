@@ -25,10 +25,12 @@
 
 import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "./slice/auth-slice";
+import appInfoSlice from "./slice/app-info";
 
 const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
+    appInfo: appInfoSlice.reducer,
   },
 });
 

@@ -10,7 +10,7 @@ import "./App.scss";
 class App extends Component {
   constructor() {
     super();
-    this.state = { data: "", token: "ukyvkuv", isLoading: false };
+    this.state = { data: "", isLoading: false };
   }
   render() {
     const { isLoading } = this.state;

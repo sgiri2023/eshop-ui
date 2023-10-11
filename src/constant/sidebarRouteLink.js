@@ -10,16 +10,16 @@ export const ROUTE_LINK = [
     name: "Home",
     link: "/dashboard/home",
     subLink: [
-      {
-        id: 11,
-        name: "One",
-        link: "/sublinkOne",
-      },
-      {
-        id: 12,
-        name: "Two",
-        link: "/sublinkTwo",
-      },
+      // {
+      //   id: 11,
+      //   name: "One",
+      //   link: "/sublinkOne",
+      // },
+      // {
+      //   id: 12,
+      //   name: "Two",
+      //   link: "/sublinkTwo",
+      // },
     ],
   },
   {

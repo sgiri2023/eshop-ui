@@ -1,3 +1,19 @@
+.expand-logo{
+    .navbar-brand-wrapper{
+        width: $sidepanel-max-width;
+    }
+    .navbar-menu-wrapper{
+        width: calc(100% - #{$sidepanel-max-width});
+    }
+}
+.collapse-logo{
+    .navbar-brand-wrapper{
+        width: $sidepanel-min-width;
+    }
+    .navbar-menu-wrapper{
+        width: calc(100% - #{$sidepanel-min-width});
+    }
+}
 .navbar{
     background: #fff;
     box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
@@ -5,7 +21,7 @@
     .navbar-brand-wrapper{
         height: $navbar-height;
         padding: 0px 20px;
-        width: $sidepanel-max-width;
+        transition: width 0.4s;
         .brand-logo{
             svg{
                 width: 3rem;
@@ -14,7 +30,7 @@
         }
     }
     .navbar-menu-wrapper{
-        width: calc(100% - #{$sidepanel-max-width});
+        transition: width 0.4s;
         height: $navbar-height;
         .navbar-menu-icon{
             font-size: 30px;

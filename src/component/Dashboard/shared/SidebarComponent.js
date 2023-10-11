@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { Collapse } from "react-bootstrap";
 import { ROUTE_LINK } from "../../../constant/sidebarRouteLink";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
-
+import { connect } from "react-redux";
+import { GrHomeRounded } from "react-icons/gr";
+// GrHomeRounded
 class SidebarComponent extends Component {
   constructor() {
     super();
@@ -20,8 +22,14 @@ class SidebarComponent extends Component {
 
   render() {
     const { activeRoute } = this.state;
+    // this.props.appInfo.isSideBarExpand
     return (
-      <nav className="sidebar sidebar-offcanvas" id="sidebar">
+      <nav
+        className={`sidebar sidebar-offcanvas ${
+          this.props.appInfo.isSideBarExpand === true ? "expand-sidebar" : "collapse-sidebar"
+        }`}
+        id="sidebar"
+      >
         <ul className="nav">
           {ROUTE_LINK.map((link, index) => (
             <li className="nav-item nav-profile " key={index}>
@@ -42,7 +50,14 @@ class SidebarComponent extends Component {
                   }`}
                   to={link.link}
                 >
-                  {link.name}
+                  {/* <span className="sidebar-menu-icon">
+                    <GrHomeRounded />
+                  </span> */}
+                  <GrHomeRounded className="sidebar-menu-icon" />
+                  <span className="sidebar-menu-parent-label">
+                    {" "}
+                    {this.props.appInfo.isSideBarExpand === true ? link.name : null}
+                  </span>
                 </Link>
                 {link.subLink.length > 0 ? (
                   activeRoute === link.name ? (
@@ -81,4 +96,10 @@ class SidebarComponent extends Component {
   }
 }
 
-export default SidebarComponent;
+const mapStateToPros = (state) => {
+  return {
+    appInfo: state.appInfo,
+  };
+};
+
+export default connect(mapStateToPros)(SidebarComponent);
