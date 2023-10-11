@@ -33,6 +33,7 @@
             font-size: 16px;
             .sidebar-menu-icon{
                 margin-right: 10px;
+                font-size: $sidebar-icon-size;
             }
             .sidebar-menu-parent-label{
 
@@ -40,7 +41,7 @@
         }
         .active-link{
             color: #1b64cf;
-            font-weight: 600;
+            font-weight: 700;
         }
         .nav-link-wrapper{
             width: 100%;
