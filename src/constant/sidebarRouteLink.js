@@ -1,11 +1,5 @@
 export const ROUTE_LINK = [
   {
-    id: 5,
-    name: "Profile",
-    link: "/dashboard/profile",
-    subLink: [],
-  },
-  {
     id: 1,
     name: "Home",
     link: "/dashboard/home",
@@ -21,6 +15,12 @@ export const ROUTE_LINK = [
       //   link: "/sublinkTwo",
       // },
     ],
+  },
+  {
+    id: 5,
+    name: "Profile",
+    link: "/dashboard/profile",
+    subLink: [],
   },
   {
     id: 4,

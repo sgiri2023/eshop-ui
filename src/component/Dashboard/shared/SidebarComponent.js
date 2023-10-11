@@ -5,7 +5,12 @@ import { ROUTE_LINK } from "../../../constant/sidebarRouteLink";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import { connect } from "react-redux";
 import { GrHomeRounded } from "react-icons/gr";
+import { CgProfile } from "react-icons/cg";
+import { MdProductionQuantityLimits } from "react-icons/md";
+import { TbReportAnalytics } from "react-icons/tb";
+// CgProfile
 // GrHomeRounded
+// TbReportAnalytics
 class SidebarComponent extends Component {
   constructor() {
     super();
@@ -53,7 +58,16 @@ class SidebarComponent extends Component {
                   {/* <span className="sidebar-menu-icon">
                     <GrHomeRounded />
                   </span> */}
-                  <GrHomeRounded className="sidebar-menu-icon" />
+                  {link.name.toLowerCase() === "profile" ? (
+                    <CgProfile className="sidebar-menu-icon" />
+                  ) : link.name.toLowerCase() === "product" ? (
+                    <MdProductionQuantityLimits className="sidebar-menu-icon" />
+                  ) : link.name.toLowerCase() === "report" ? (
+                    <TbReportAnalytics className="sidebar-menu-icon" />
+                  ) : (
+                    <GrHomeRounded className="sidebar-menu-icon" />
+                  )}
+
                   <span className="sidebar-menu-parent-label">
                     {" "}
                     {this.props.appInfo.isSideBarExpand === true ? link.name : null}
