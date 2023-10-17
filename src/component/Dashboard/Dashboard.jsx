@@ -3,12 +3,31 @@ import NavbarComponent from "./shared/NavbarComponent";
 import SidebarComponent from "./shared/SidebarComponent";
 import PannelComponent from "./shared/PannelComponent";
 import FooterComponent from "./shared/FooterComponent";
+import axios from "./../../axiosClient/eaxios";
+import { connect } from "react-redux";
+import { userDetailsAction } from "../../store/slice/userDetails-slice";
 
 class Dashboard extends Component {
   constructor() {
     super();
     this.state = { data: "" };
   }
+
+  getUserDetails = () => {
+    axios
+      .get(`/api/user/details`)
+      .then((res) => {
+        console.log(".......User Details: ", res.data);
+        this.props.updateUserDetails(res.data);
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      });
+  };
+  componentDidMount() {
+    this.getUserDetails();
+  }
+
   render() {
     return (
       <div>
@@ -29,4 +48,17 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+const mapStateToPros = (state) => {
+  return {
+    auth: state.auth,
+    userDetails: state.userDetails,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateUserDetails: (data) => dispatch(userDetailsAction.handleUpdateUser(data)),
+  };
+};
+
+export default connect(mapStateToPros, mapDispatchToProps)(Dashboard);

@@ -7,6 +7,8 @@ import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
 import store from "./store";
+import axiosInstance, { setupAxiosClient } from "./axiosClient/eaxios";
+setupAxiosClient(store, axiosInstance);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

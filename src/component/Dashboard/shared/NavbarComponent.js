@@ -80,7 +80,9 @@ class NavbarComponent extends Component {
             </div>
             <div className="navbar-profile tooltip-custom">
               <AiOutlineUser className="profile-icon" />
-              <span className="profile-name">{"Smith"}</span>
+              <span className="profile-name">
+                {this.props.userDetails.firstName} {this.props.userDetails.lastName}
+              </span>
               <span class="tooltiptext">Profile</span>
             </div>
           </div>
@@ -91,10 +93,11 @@ class NavbarComponent extends Component {
 }
 
 const mapStateToPros = (state) => {
-  console.log("Store from login: ", state);
+  console.log("Store from navbar: ", state);
   return {
     auth: state.auth,
     appInfo: state.appInfo,
+    userDetails: state.userDetails.userDetails,
   };
 };
 

@@ -4,6 +4,7 @@ import { Formik, Field } from "formik";
 import * as yup from "yup";
 import { connect } from "react-redux";
 import { authAction } from "../../store/slice/auth-slice";
+import axios from "./../../axiosClient/eaxios";
 
 const initialValues = {
   firstName: "",
@@ -13,6 +14,12 @@ const initialValues = {
   isCustomer: true,
   formType: "SIGN_UP",
 };
+
+// "rashmi@gmail.com"
+// "Pass@123"
+
+// username: "eshop@gmail.com",
+// password: "Sgiri@12345",
 
 const signupSchema = yup.object().shape({
   firstName: yup
@@ -77,19 +84,54 @@ class Login extends Component {
     this.state = { data: "", formType: "LOGIN", errorMessage: "" };
   }
   handleSubmitForm = (values, { setSubmitting }) => {
+    const { formType } = this.state;
     console.log(".......Values: ", values);
-
-    this.props.initiateLogin();
     setSubmitting(true);
-    // ========= Login API ================//
-    setTimeout(() => {
-      console.log("Delayed for 5 second.");
-      this.props.successLogin();
-      // this.props.setLoginError("Login Failed");
-      this.props.login("spring-eu56fe-security");
-      this.props.history.push("/dashboard/home");
-      setSubmitting(true);
-    }, 2000);
+
+    if (formType === "LOGIN") {
+      this.props.initiateLogin();
+      let payload = {
+        email: values.username,
+        password: values.password,
+      };
+      axios
+        .post(`/api/user/login`, payload)
+        .then((res) => {
+          console.log(".......Session Key: ", res.data);
+          setSubmitting(false);
+          this.props.successLogin();
+          this.props.login(res.data);
+          this.props.history.push("/dashboard/home");
+        })
+        .catch((err) => {
+          console.log("Login Error: ", err);
+          this.props.setLoginError("Login Failed");
+          setSubmitting(false);
+          setTimeout(() => {
+            this.props.setLoginError("");
+          }, 2000);
+        });
+    } else if (formType === "SIGN_UP") {
+      this.props.initiateLogin();
+      let payload = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        isCustomer: values.isCustomer,
+        email: values.username,
+        password: values.password,
+        isArchive: false,
+      };
+      axios
+        .post(`api/user/add`, payload)
+        .then((res) => {
+          console.log(".......Add User Response: ", res.data);
+          setSubmitting(false);
+        })
+        .catch((err) => {
+          console.log("User Add Error: ", err);
+          setSubmitting(false);
+        });
+    }
   };
 
   render() {
@@ -180,7 +222,7 @@ class Login extends Component {
                       <Form.Group as={Col} md="12" controlId="validationFormik01">
                         <Form.Label>Password</Form.Label>
                         <Form.Control
-                          type="text"
+                          type="password"
                           name="password"
                           value={values.password}
                           onChange={handleChange}
