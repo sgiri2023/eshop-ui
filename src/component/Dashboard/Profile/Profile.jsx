@@ -1,4 +1,5 @@
 import { Component } from "react";
+import ProfileTemplate from "./ProfileTemplate";
 
 class Profile extends Component {
   constructor() {
@@ -6,7 +7,11 @@ class Profile extends Component {
     this.state = { data: "" };
   }
   render() {
-    return <h2>Profile</h2>;
+    return (
+      <div>
+        <ProfileTemplate />
+      </div>
+    );
   }
 }
 
