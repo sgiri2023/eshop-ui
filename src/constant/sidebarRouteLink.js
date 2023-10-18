@@ -1,21 +1,21 @@
 export const ROUTE_LINK = [
-  {
-    id: 1,
-    name: "Home",
-    link: "/dashboard/home",
-    subLink: [
-      // {
-      //   id: 11,
-      //   name: "One",
-      //   link: "/sublinkOne",
-      // },
-      // {
-      //   id: 12,
-      //   name: "Two",
-      //   link: "/sublinkTwo",
-      // },
-    ],
-  },
+  // {
+  //   id: 1,
+  //   name: "Home",
+  //   link: "/dashboard/home",
+  //   subLink: [
+  //     // {
+  //     //   id: 11,
+  //     //   name: "One",
+  //     //   link: "/sublinkOne",
+  //     // },
+  //     // {
+  //     //   id: 12,
+  //     //   name: "Two",
+  //     //   link: "/sublinkTwo",
+  //     // },
+  //   ],
+  // },
   {
     id: 5,
     name: "Profile",

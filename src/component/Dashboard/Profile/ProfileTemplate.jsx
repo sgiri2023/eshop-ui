@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { Row, Col, Nav, Tab } from "react-bootstrap";
+import Address from "./Address/Address";
 
 class ProfileTemplate extends Component {
   constructor() {
@@ -31,7 +32,9 @@ class ProfileTemplate extends Component {
             <Col sm={9} className="account-right-tab-container boxshadow_template_one">
               <Tab.Content>
                 <Tab.Pane eventKey="first">Profile</Tab.Pane>
-                <Tab.Pane eventKey="second">Address</Tab.Pane>
+                <Tab.Pane eventKey="second">
+                  <Address />
+                </Tab.Pane>
                 <Tab.Pane eventKey="orders">Orders</Tab.Pane>
                 <Tab.Pane eventKey="account">Account</Tab.Pane>
               </Tab.Content>
