@@ -20,9 +20,9 @@ class ProfileTemplate extends Component {
                 <Nav.Item>
                   <Nav.Link eventKey="second">Address</Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                {/* <Nav.Item>
                   <Nav.Link eventKey="orders">Orders</Nav.Link>
-                </Nav.Item>
+                </Nav.Item> */}
                 <Nav.Item>
                   <Nav.Link eventKey="account">Account</Nav.Link>
                 </Nav.Item>
@@ -35,7 +35,7 @@ class ProfileTemplate extends Component {
                 <Tab.Pane eventKey="second">
                   <Address />
                 </Tab.Pane>
-                <Tab.Pane eventKey="orders">Orders</Tab.Pane>
+                {/* <Tab.Pane eventKey="orders">Orders</Tab.Pane> */}
                 <Tab.Pane eventKey="account">Account</Tab.Pane>
               </Tab.Content>
             </Col>

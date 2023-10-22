@@ -39,7 +39,7 @@ class ProductCard extends Component {
               </small>
             </div>
             <div className="image">
-              <img src="https://imgur.com/VcypK5c.png" />
+              <img src={product.pictureUrl} />
             </div>
             <div className="vitamin">
               <h3>{product.name}</h3>
@@ -95,6 +95,7 @@ class ProductCard extends Component {
               <p>{product.description}</p>
               {/* <u>144 Views</u> */}
             </div>
+            <div className="seller-info">Seller: {product.sellerName}</div>
             <div className="last_buttons">
               <div className="qty_btn">
                 <i className="fa fa-minus"></i>
