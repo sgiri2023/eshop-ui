@@ -1,0 +1,67 @@
+.account-container{
+    .bank-card-container{
+        // border: 1px solid red;
+        min-height: 150px;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        background-color: #eff0f2;
+        border-radius: 10px;
+        padding: 20px;
+        .wallet-card{
+            width: 50%;
+            min-width: 300px;
+            height: 100%;
+            min-height: 150px;
+            // border: 1px solid red;
+            border-radius: 10px;
+            background-color: #0D6EFD;
+            color: #e9ecef;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
+            padding: 20px;
+
+            .account-name{
+                font-weight: 600;
+                font-size: 20px;
+            }
+            .balance-title{
+                font-weight: 400;
+                font-size: 14px;
+                margin-top: 5px;
+            }
+            .balance{
+                font-weight: 700;
+                font-size: 28px;
+            }
+            .walled-id{
+                font-weight: 400;
+                font-size: 12px;
+                margin-top: 5px;
+            }
+        }
+    }
+
+    .transaction-log-container{
+        margin-top: 30px;
+        border: 1px solid #cdc6c6;
+        .transaction-log{
+
+            
+            .debit-cell{
+                td{
+                    color: red;
+                }
+                    
+            }
+
+            .credit-cell{
+                td{
+                    color: Green;
+                }
+                    
+            }
+            
+        }
+    }
+}

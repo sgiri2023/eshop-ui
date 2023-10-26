@@ -1,5 +1,6 @@
 import { Component } from "react";
 import NumberFormat from "react-number-format";
+import ProgressSteps from "../../../UI/ProgressSteps/ProgressSteps";
 
 class OrderCard extends Component {
   constructor() {
