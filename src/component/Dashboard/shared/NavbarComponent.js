@@ -5,7 +5,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import { connect } from "react-redux";
 import { authAction } from "../../../store/slice/auth-slice";
 import { appInfoAction } from "../../../store/slice/app-info";
-import { FaWallet } from "react-icons/fa";
+import { FaWallet, FaShoppingCart } from "react-icons/fa";
 import NumberFormat from "react-number-format";
 class NavbarComponent extends Component {
   constructor() {
@@ -23,6 +23,11 @@ class NavbarComponent extends Component {
     } else {
       this.props.handleSidebarExpand();
     }
+  };
+
+  handleGoToCart = () => {
+    console.log(".......This Porps: ", this.props);
+    this.props.history.push("/dashboard/profile/cart");
   };
 
   render() {
@@ -105,6 +110,15 @@ class NavbarComponent extends Component {
                   </span>
                 </div>
               )}
+
+            {this.props.userDetails.isCustomer === true && (
+              <Link className="cart-conatiner" to="/dashboard/cart">
+                <FaShoppingCart />
+                {this.props.cartDetails.length > 0 && (
+                  <span className="order-product-count">{this.props.cartDetails.length}</span>
+                )}
+              </Link>
+            )}
           </div>
         </div>
       </nav>
@@ -119,6 +133,7 @@ const mapStateToPros = (state) => {
     appInfo: state.appInfo,
     userDetails: state.userDetails.userDetails,
     accountDetails: state.accountDetails,
+    cartDetails: state.cartDetails.cartDetails,
   };
 };
 

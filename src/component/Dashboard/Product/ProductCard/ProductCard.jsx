@@ -1,5 +1,8 @@
 import { Component } from "react";
 import NumberFormat from "react-number-format";
+import { cartInfoAction } from "../../../../store/slice/cart-slice";
+import { connect } from "react-redux";
+
 class ProductCard extends Component {
   constructor() {
     super();
@@ -18,8 +21,12 @@ class ProductCard extends Component {
     }
   };
 
-  // https://imgur.com/VcypK5c.png
-  // https://hinacreates.com/wp-content/uploads/2021/06/dummy2.png
+  handleAddToCart = (product) => {
+    let currentCartDetails = [...this.props.cartDetails];
+    currentCartDetails.push(product);
+    this.props.updateCart(currentCartDetails);
+  };
+
   render() {
     const { heart, addbag } = this.state;
     const { product, key } = this.props;
@@ -118,7 +125,7 @@ class ProductCard extends Component {
                   </strong>
                 </p>
 
-                <button>
+                <button onClick={() => this.handleAddToCart(product)}>
                   <i className="fa fa-shopping-bag"></i>Add to bag
                 </button>
               </div>
@@ -130,4 +137,16 @@ class ProductCard extends Component {
   }
 }
 
-export default ProductCard;
+const mapStateToPros = (state) => {
+  return {
+    cartDetails: state.cartDetails.cartDetails,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateCart: (data) => dispatch(cartInfoAction.updateCartDetails(data)),
+  };
+};
+
+export default connect(mapStateToPros, mapDispatchToProps)(ProductCard);

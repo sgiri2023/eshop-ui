@@ -6,6 +6,7 @@ const Order = lazy(() => import("../component/Dashboard/Order/Order"));
 const Report = lazy(() => import("../component/Dashboard/Report/Report"));
 const Product = lazy(() => import("../component/Dashboard/Product/Product"));
 const Profile = lazy(() => import("../component/Dashboard/Profile/Profile"));
+const Cart = lazy(() => import("../component/Dashboard/Cart/Cart"));
 
 const DashboardRoute = () => {
   return (
@@ -22,6 +23,7 @@ const DashboardRoute = () => {
         <Route path="/dashboard/report" render={(props) => <Report {...props} />} />
         <Route path="/dashboard/product" render={(props) => <Product {...props} />} />
         <Route path="/dashboard/profile" render={(props) => <Profile {...props} />} />
+        <Route path="/dashboard/cart" render={(props) => <Cart {...props} />} />
         <Redirect to="/dashboard/home" />
       </Switch>
     </Suspense>
