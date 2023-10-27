@@ -21,9 +21,11 @@ class ProductCard extends Component {
     }
   };
 
-  handleAddToCart = (product) => {
+  handleAddToCart = (product, purchaseQuantity = 1) => {
+    let modifyProduct = { ...product };
+    modifyProduct.purchaseQuantity = purchaseQuantity;
     let currentCartDetails = [...this.props.cartDetails];
-    currentCartDetails.push(product);
+    currentCartDetails.push(modifyProduct);
     this.props.updateCart(currentCartDetails);
   };
 
@@ -105,9 +107,9 @@ class ProductCard extends Component {
             <div className="seller-info">Seller: {product.sellerName}</div>
             <div className="last_buttons">
               <div className="qty_btn">
-                <i className="fa fa-minus"></i>
+                {/* <i className="fa fa-minus"></i>
                 <p>{addbag}</p>
-                <i className="fa fa-plus"></i>
+                <i className="fa fa-plus"></i> */}
               </div>
               <div className="money_bag">
                 <p>
