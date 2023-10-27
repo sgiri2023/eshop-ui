@@ -5,7 +5,8 @@ import { AiOutlineUser } from "react-icons/ai";
 import { connect } from "react-redux";
 import { authAction } from "../../../store/slice/auth-slice";
 import { appInfoAction } from "../../../store/slice/app-info";
-
+import { FaWallet } from "react-icons/fa";
+import NumberFormat from "react-number-format";
 class NavbarComponent extends Component {
   constructor() {
     super();
@@ -85,6 +86,25 @@ class NavbarComponent extends Component {
               </span>
               <span class="tooltiptext">Profile</span>
             </div>
+            {this.props.userDetails.isAdmin === false &&
+              this.props.accountDetails.isLoading === false &&
+              this.props.accountDetails.bankDetails.length > 0 && (
+                <div className="wallet-balance-conatiner">
+                  <FaWallet />
+                  <span>
+                    <NumberFormat
+                      value={this.props.accountDetails.bankDetails[0].balance}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      prefix={"₹"}
+                      decimalScale={2}
+                      fixedDecimalScale={true}
+                      thousandsGroupStyle={"thousand"}
+                      renderText={(value) => <span> {value}</span>}
+                    />
+                  </span>
+                </div>
+              )}
           </div>
         </div>
       </nav>
@@ -98,6 +118,7 @@ const mapStateToPros = (state) => {
     auth: state.auth,
     appInfo: state.appInfo,
     userDetails: state.userDetails.userDetails,
+    accountDetails: state.accountDetails,
   };
 };
 

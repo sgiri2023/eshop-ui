@@ -6,11 +6,12 @@ import FooterComponent from "./shared/FooterComponent";
 import axios from "./../../axiosClient/eaxios";
 import { connect } from "react-redux";
 import { userDetailsAction } from "../../store/slice/userDetails-slice";
+import { accountInfoAction } from "../../store/slice/account-slice";
 
 class Dashboard extends Component {
   constructor() {
     super();
-    this.state = { data: "" };
+    this.state = { data: "", isBankLoading: true, bankList: [] };
   }
 
   getUserDetails = () => {
@@ -24,8 +25,49 @@ class Dashboard extends Component {
         console.log("Error: ", err);
       });
   };
+
+  getBankDetails = () => {
+    this.props.updateAccountDetails(this.state.bankList);
+    this.props.updateAccountDetailsLoadingState(true);
+    this.setState(
+      {
+        isBankLoading: true,
+        bankList: [],
+      },
+      () => {
+        axios
+          .get(`/api/wallet/details`)
+          .then((res) => {
+            console.log(".......Account Details: ", res.data);
+            this.setState(
+              {
+                isBankLoading: false,
+                bankList: res.data,
+              },
+              () => {
+                this.props.updateAccountDetails(res.data);
+                this.props.updateAccountDetailsLoadingState(false);
+              }
+            );
+          })
+          .catch((err) => {
+            console.log("Error: ", err);
+            this.setState(
+              {
+                isBankLoading: false,
+              },
+              () => {
+                this.props.updateAccountDetailsLoadingState(false);
+              }
+            );
+          });
+      }
+    );
+  };
+
   componentDidMount() {
     this.getUserDetails();
+    this.getBankDetails();
   }
 
   render() {
@@ -58,6 +100,9 @@ const mapStateToPros = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updateUserDetails: (data) => dispatch(userDetailsAction.handleUpdateUser(data)),
+    updateAccountDetails: (data) => dispatch(accountInfoAction.updateAccoutDetails(data)),
+    updateAccountDetailsLoadingState: (data) =>
+      dispatch(accountInfoAction.updateAccoutLoading(data)),
   };
 };
 

@@ -2,6 +2,7 @@ import { Component } from "react";
 import BankCard from "./BankCard";
 import TransactionLog from "./TransactionLog";
 import axios from "./../../../../axiosClient/eaxios";
+import { connect } from "react-redux";
 
 class Account extends Component {
   constructor() {
@@ -65,7 +66,9 @@ class Account extends Component {
   };
 
   componentDidMount() {
-    this.getBankDetails();
+    this.setState({
+      bankList: this.props.accountDetails.bankDetails,
+    });
     this.getTransactionDetails();
   }
   render() {
@@ -86,4 +89,9 @@ class Account extends Component {
   }
 }
 
-export default Account;
+const mapStateToPros = (state) => {
+  return {
+    accountDetails: state.accountDetails,
+  };
+};
+export default connect(mapStateToPros)(Account);

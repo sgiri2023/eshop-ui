@@ -1,5 +1,5 @@
 import { Component } from "react";
-
+import NumberFormat from "react-number-format";
 class ProductCard extends Component {
   constructor() {
     super();
@@ -103,7 +103,21 @@ class ProductCard extends Component {
                 <i className="fa fa-plus"></i>
               </div>
               <div className="money_bag">
-                <h3>{product.discountedPrice}</h3>
+                <p>
+                  <strong>
+                    <NumberFormat
+                      value={product.discountedPrice}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      prefix={"₹"}
+                      decimalScale={2}
+                      fixedDecimalScale={true}
+                      thousandsGroupStyle={"thousand"}
+                      renderText={(value) => <span> {value}</span>}
+                    />
+                  </strong>
+                </p>
+
                 <button>
                   <i className="fa fa-shopping-bag"></i>Add to bag
                 </button>
