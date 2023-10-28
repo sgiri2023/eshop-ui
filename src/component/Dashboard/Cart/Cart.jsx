@@ -37,6 +37,8 @@ class Cart extends Component {
     return totalPrice;
   };
 
+  handlePlaceOrder = () => {};
+
   componentDidMount() {
     console.log(".......Cart Item Mounted: ", this.props);
   }
@@ -154,6 +156,7 @@ class Cart extends Component {
                       ? true
                       : false
                   }
+                  onClick={() => this.handlePlaceOrder()}
                 >
                   Place Order
                 </button>

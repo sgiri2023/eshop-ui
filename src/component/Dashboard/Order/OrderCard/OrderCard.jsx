@@ -35,7 +35,8 @@ class OrderCard extends Component {
           </div>
         </div>
         <div className="audit_trail-container">
-          {order.auditResponseList.length > 0 &&
+          {order.auditResponseList &&
+            order.auditResponseList.length > 0 &&
             order.auditResponseList.map((auditItem, index) => (
               <div key={index} className="audit-item">
                 {auditItem.invoiceState}
