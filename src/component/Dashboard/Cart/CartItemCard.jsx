@@ -2,19 +2,21 @@ import { Component } from "react";
 import NumberFormat from "react-number-format";
 import { connect } from "react-redux";
 import { cartInfoAction } from "../../../store/slice/cart-slice";
+import { AiFillDelete } from "react-icons/ai";
 
 class CartItemCard extends Component {
   constructor() {
     super();
     this.state = { data: "" };
   }
-  handleIncrement = (productId) => {
+
+  handleIncrement = (productId, index) => {
     let productList = [...this.props.cartDetails];
     let tempProductList = [];
 
-    productList.map((product) => {
+    productList.map((product, pIndex) => {
       let tempProduct = { ...product };
-      if (Number(product.id) === Number(productId)) {
+      if (Number(product.id) === Number(productId) && pIndex === index) {
         tempProduct.purchaseQuantity = tempProduct.purchaseQuantity + 1;
       }
       tempProductList.push(tempProduct);
@@ -22,13 +24,13 @@ class CartItemCard extends Component {
     this.props.updateCart(tempProductList);
   };
 
-  handleDecrement = (productId) => {
+  handleDecrement = (productId, index) => {
     let productList = [...this.props.cartDetails];
     let tempProductList = [];
 
-    productList.map((product) => {
+    productList.map((product, pIndex) => {
       let tempProduct = { ...product };
-      if (Number(product.id) === Number(productId)) {
+      if (Number(product.id) === Number(productId) && pIndex === index) {
         if (tempProduct.purchaseQuantity <= 1) {
         } else {
           tempProduct.purchaseQuantity = tempProduct.purchaseQuantity - 1;
@@ -39,8 +41,15 @@ class CartItemCard extends Component {
     this.props.updateCart(tempProductList);
   };
 
+  hanldeDeleteProduct = (productIndex) => {
+    let productList = [...this.props.cartDetails];
+    let index = productIndex;
+    productList.splice(index, 1);
+    this.props.updateCart(productList);
+  };
+
   render() {
-    const { cartItemDetails } = this.props;
+    const { cartItemDetails, index } = this.props;
     return (
       <div className="cart-item-container">
         <div className="product-image">
@@ -82,18 +91,27 @@ class CartItemCard extends Component {
           </div>
         </div>
         <div className="quantity-control-container">
+          <div className="delete-item" onClick={() => this.hanldeDeleteProduct(index)}>
+            <AiFillDelete />
+          </div>
+
           <button
             className="decrese-quantity"
-            onClick={() => this.handleDecrement(cartItemDetails.id)}
+            onClick={() => this.handleDecrement(cartItemDetails.id, index)}
           >
             {"-"}
           </button>
           <div className="input-qty">
-            <input type="number" value={cartItemDetails.purchaseQuantity} onChange={(e) => {}} />
+            <input
+              type="number"
+              value={cartItemDetails.purchaseQuantity}
+              onChange={(e) => {}}
+              disabled={true}
+            />
           </div>
           <button
             className="increase-quantity"
-            onClick={() => this.handleIncrement(cartItemDetails.id)}
+            onClick={() => this.handleIncrement(cartItemDetails.id, index)}
           >
             {"+"}
           </button>

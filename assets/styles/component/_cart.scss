@@ -7,6 +7,9 @@
         width: 60%;
         padding: 10px;
         height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
     .price-details-container{
         width: 40%;
@@ -86,7 +89,7 @@
     }
 
     .cart-item-container{
-        margin-bottom: 20px;
+        // margin-bottom: 20px;
         height: 150px;
         border: 1px solid #e0e0e0;
         padding: 20px;
@@ -165,6 +168,15 @@
             display: flex;
             flex-direction: row;
             align-items: center;
+            position: relative;
+
+            .delete-item{
+                position: absolute;
+                right: 0px;
+                top: 0px;
+                color: #e54545;
+                font-size: 20px;
+            }
             
             .decrese-quantity, .increase-quantity{
                 width: 28px;

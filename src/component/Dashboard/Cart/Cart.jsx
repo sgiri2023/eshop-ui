@@ -47,7 +47,7 @@ class Cart extends Component {
         <div className="item-list-container boxshadow_template_one">
           {cartDetails.length > 0
             ? cartDetails.map((cartDetails, index) => (
-                <CartItemCard cartItemDetails={cartDetails} key={index} />
+                <CartItemCard cartItemDetails={cartDetails} key={index} index={index} />
               ))
             : "Empty Cart"}
         </div>
