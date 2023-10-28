@@ -83,6 +83,9 @@ class Dashboard extends Component {
                 defaultAddressId = address.id;
               }
             });
+            if (defaultAddressId === "" && res.data.length > 0) {
+              defaultAddressId = res.data[0].id;
+            }
             this.setState(
               {
                 addressList: res.data,
@@ -90,7 +93,7 @@ class Dashboard extends Component {
               },
               () => {
                 this.props.updateUserAddresss(res.data);
-                this.props.updateCartAddressId(13);
+                this.props.updateCartAddressId(defaultAddressId);
               }
             );
           })

@@ -98,7 +98,7 @@ class CartItemCard extends Component {
           <div className="delete-item" onClick={() => this.hanldeDeleteProduct(index)}>
             <AiFillDelete />
           </div>
-
+          <div>in {cartItemDetails.deliveryDays} days</div>
           <button
             className="decrese-quantity"
             onClick={() => this.handleDecrement(cartItemDetails.id, index)}
