@@ -2,11 +2,13 @@ import { Component } from "react";
 import CartItemCard from "./CartItemCard";
 import { connect } from "react-redux";
 import NumberFormat from "react-number-format";
+import axios from "./../../../axiosClient/eaxios";
+import { cartInfoAction } from "../../../store/slice/cart-slice";
 
 class Cart extends Component {
   constructor() {
     super();
-    this.state = { data: "" };
+    this.state = { data: "", isSubmitting: false };
   }
 
   handleCalculateTotalPrice = () => {
@@ -37,13 +39,66 @@ class Cart extends Component {
     return totalPrice;
   };
 
-  handlePlaceOrder = () => {};
+  handlePlaceOrder = () => {
+    const { cartDetails, cartAddressId } = this.props;
+    let invoiceRequestList = [];
+
+    cartDetails.map((product) => {
+      let invoiceRequest = {
+        unitPrice: product.actualPrice,
+        discountRate: product.discountRate,
+        quantity: product.purchaseQuantity,
+        taxRate: 0,
+        shippingCharge: 0,
+        productId: product.id,
+        sellerId: product.sellerId,
+        paymentMethod: "WALLET",
+        addressId: cartAddressId,
+      };
+      invoiceRequestList.push(invoiceRequest);
+    });
+
+    let payload = {
+      invoiceRequestList: invoiceRequestList,
+    };
+
+    console.log(".......Place Order Payload: ", payload);
+    // this.props.updateCart([]);
+    // this.props.history.push("/dashboard/order");
+    this.setState(
+      {
+        isSubmitting: true,
+      },
+      () => {
+        axios
+          .post(`/api/invoice/create-bulk`, payload)
+          .then((res) => {
+            console.log(".......Invoice Created Successfully: ", res.data);
+            this.props.updateCart([]);
+            this.props.history.push("/dashboard/order");
+            this.setState(
+              {
+                isSubmitting: false,
+              },
+              () => {}
+            );
+          })
+          .catch((err) => {
+            console.log("Error: ", err);
+            this.setState({
+              isSubmitting: false,
+            });
+          });
+      }
+    );
+  };
 
   componentDidMount() {
     console.log(".......Cart Item Mounted: ", this.props);
   }
   render() {
     const { cartDetails, userAddressList, cartAddressId } = this.props;
+    const { isSubmitting } = this.props;
 
     return (
       <div>
@@ -154,6 +209,8 @@ class Cart extends Component {
                     this.handleCalculateTotalFinalPrice() >
                     this.props.accountDetails.bankDetails[0].balance
                       ? true
+                      : isSubmitting === true
+                      ? true
                       : false
                   }
                   onClick={() => this.handlePlaceOrder()}
@@ -178,4 +235,10 @@ const mapStateToPros = (state) => {
   };
 };
 
-export default connect(mapStateToPros)(Cart);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateCart: (data) => dispatch(cartInfoAction.updateCartDetails(data)),
+  };
+};
+
+export default connect(mapStateToPros, mapDispatchToProps)(Cart);

@@ -19,6 +19,7 @@ class OrderCard extends Component {
         <div className="product-description">
           <div className="product-name">{order.productResponse.name}</div>
           <div className="product-description">{order.productResponse.description}</div>
+          <div className="product-description">Quantity: {order.quantity}</div>
         </div>
         <div className="amount-section">
           <div className="paid-amount">
