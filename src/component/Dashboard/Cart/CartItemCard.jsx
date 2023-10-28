@@ -60,18 +60,20 @@ class CartItemCard extends Component {
           <div className="product-description">{cartItemDetails.description}</div>
           <div className="seller-info">Seller: {cartItemDetails.sellerName}</div>
           <div className="price">
-            <span className="actual-price">
-              <NumberFormat
-                value={cartItemDetails.actualPrice * cartItemDetails.purchaseQuantity}
-                displayType={"text"}
-                thousandSeparator={true}
-                prefix={"₹"}
-                decimalScale={2}
-                fixedDecimalScale={true}
-                thousandsGroupStyle={"thousand"}
-                renderText={(value) => <span> {value}</span>}
-              />
-            </span>{" "}
+            {cartItemDetails.discountRate > 0 && (
+              <span className="actual-price">
+                <NumberFormat
+                  value={cartItemDetails.actualPrice * cartItemDetails.purchaseQuantity}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"₹"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
+                  thousandsGroupStyle={"thousand"}
+                  renderText={(value) => <span> {value}</span>}
+                />
+              </span>
+            )}{" "}
             <span className="discounted-price">
               <NumberFormat
                 value={cartItemDetails.discountedPrice * cartItemDetails.purchaseQuantity}
@@ -84,10 +86,12 @@ class CartItemCard extends Component {
                 renderText={(value) => <span> {value}</span>}
               />
             </span>{" "}
-            <span className="discount-rate">
-              {cartItemDetails.discountRate}
-              {"%"} off
-            </span>
+            {cartItemDetails.discountRate > 0 && (
+              <span className="discount-rate">
+                {cartItemDetails.discountRate}
+                {"%"} off
+              </span>
+            )}
           </div>
         </div>
         <div className="quantity-control-container">

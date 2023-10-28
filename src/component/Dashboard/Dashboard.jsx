@@ -7,6 +7,7 @@ import axios from "./../../axiosClient/eaxios";
 import { connect } from "react-redux";
 import { userDetailsAction } from "../../store/slice/userDetails-slice";
 import { accountInfoAction } from "../../store/slice/account-slice";
+import { cartInfoAction } from "../../store/slice/cart-slice";
 
 class Dashboard extends Component {
   constructor() {
@@ -65,9 +66,48 @@ class Dashboard extends Component {
     );
   };
 
+  getAddressDetails = () => {
+    this.props.updateUserAddresss([]);
+    this.setState(
+      {
+        isLoading: true,
+      },
+      () => {
+        axios
+          .get(`api/user/get-address-list`)
+          .then((res) => {
+            console.log(".......Address List: ", res.data);
+            let defaultAddressId = "";
+            res.data.map((address) => {
+              if (address.isDefault == true) {
+                defaultAddressId = address.id;
+              }
+            });
+            this.setState(
+              {
+                addressList: res.data,
+                isLoading: false,
+              },
+              () => {
+                this.props.updateUserAddresss(res.data);
+                this.props.updateCartAddressId(13);
+              }
+            );
+          })
+          .catch((err) => {
+            console.log("Error: ", err);
+            this.setState({
+              isLoading: false,
+            });
+          });
+      }
+    );
+  };
+
   componentDidMount() {
     this.getUserDetails();
     this.getBankDetails();
+    this.getAddressDetails();
   }
 
   render() {
@@ -100,9 +140,11 @@ const mapStateToPros = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updateUserDetails: (data) => dispatch(userDetailsAction.handleUpdateUser(data)),
+    updateUserAddresss: (data) => dispatch(userDetailsAction.updateUserAddress(data)),
     updateAccountDetails: (data) => dispatch(accountInfoAction.updateAccoutDetails(data)),
     updateAccountDetailsLoadingState: (data) =>
       dispatch(accountInfoAction.updateAccoutLoading(data)),
+    updateCartAddressId: (data) => dispatch(cartInfoAction.updateAddressId(data)),
   };
 };
 

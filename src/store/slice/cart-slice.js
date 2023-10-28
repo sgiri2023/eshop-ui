@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 let initialState = {
   cartDetails: [],
+  addressId: "",
 };
 
 const cartSlice = createSlice({
@@ -10,6 +11,9 @@ const cartSlice = createSlice({
   reducers: {
     updateCartDetails(state, data) {
       state.cartDetails = data.payload;
+    },
+    updateAddressId(state, data) {
+      state.addressId = data.payload;
     },
   },
 });
