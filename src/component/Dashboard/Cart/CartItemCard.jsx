@@ -89,7 +89,7 @@ class CartItemCard extends Component {
             {"-"}
           </button>
           <div className="input-qty">
-            <input type="number" value={cartItemDetails.purchaseQuantity} />
+            <input type="number" value={cartItemDetails.purchaseQuantity} onChange={(e) => {}} />
           </div>
           <button
             className="increase-quantity"
