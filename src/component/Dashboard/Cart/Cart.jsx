@@ -110,7 +110,21 @@ class Cart extends Component {
               </div>
             </div>
             <div className="place-order-button-container">
-              <button className="place-order-button">Place Order</button>
+              {this.handleCalculateTotalFinalPrice() >
+                this.props.accountDetails.bankDetails[0].balance && (
+                <div className="insufficient-balance-message"> Insufficient Balance</div>
+              )}
+              <button
+                className="place-order-button"
+                disabled={
+                  this.handleCalculateTotalFinalPrice() >
+                  this.props.accountDetails.bankDetails[0].balance
+                    ? true
+                    : false
+                }
+              >
+                Place Order
+              </button>
             </div>
           </div>
         )}
@@ -122,6 +136,7 @@ class Cart extends Component {
 const mapStateToPros = (state) => {
   return {
     cartDetails: state.cartDetails.cartDetails,
+    accountDetails: state.accountDetails,
   };
 };
 
