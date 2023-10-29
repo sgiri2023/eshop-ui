@@ -2,6 +2,9 @@ import { Component } from "react";
 import { Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Formik, Field } from "formik";
 import * as yup from "yup";
+import { connect } from "react-redux";
+import { authAction } from "../../store/slice/auth-slice";
+import axios from "./../../axiosClient/eaxios";
 
 const initialValues = {
   firstName: "",
@@ -11,6 +14,12 @@ const initialValues = {
   isCustomer: true,
   formType: "SIGN_UP",
 };
+
+// "rashmi@gmail.com"
+// "Pass@123"
+
+// username: "eshop@gmail.com",
+// password: "Sgiri@12345",
 
 const signupSchema = yup.object().shape({
   firstName: yup
@@ -74,12 +83,60 @@ class Login extends Component {
     super();
     this.state = { data: "", formType: "LOGIN", errorMessage: "" };
   }
-  handleSubmitForm = (values) => {
+  handleSubmitForm = (values, { setSubmitting }) => {
+    const { formType } = this.state;
     console.log(".......Values: ", values);
-    this.props.history.push("/dashboard/home");
+    setSubmitting(true);
+
+    if (formType === "LOGIN") {
+      this.props.initiateLogin();
+      let payload = {
+        email: values.username,
+        password: values.password,
+      };
+      axios
+        .post(`/api/user/login`, payload)
+        .then((res) => {
+          console.log(".......Session Key: ", res.data);
+          setSubmitting(false);
+          this.props.successLogin();
+          this.props.login(res.data);
+          this.props.history.push("/dashboard/home");
+        })
+        .catch((err) => {
+          console.log("Login Error: ", err);
+          this.props.setLoginError("Login Failed");
+          setSubmitting(false);
+          setTimeout(() => {
+            this.props.setLoginError("");
+          }, 2000);
+        });
+    } else if (formType === "SIGN_UP") {
+      this.props.initiateLogin();
+      let payload = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        isCustomer: values.isCustomer,
+        email: values.username,
+        password: values.password,
+        isArchive: false,
+      };
+      axios
+        .post(`api/user/add`, payload)
+        .then((res) => {
+          console.log(".......Add User Response: ", res.data);
+          setSubmitting(false);
+        })
+        .catch((err) => {
+          console.log("User Add Error: ", err);
+          setSubmitting(false);
+        });
+    }
   };
+
   render() {
     const { formType, errorMessage } = this.state;
+    const { loginErrorMessage, isLoginLoading } = this.props;
     return (
       <div className="login-container">
         <div className="login-card">
@@ -106,14 +163,16 @@ class Login extends Component {
                   setFieldError,
                   setFieldTouched,
                   setErrors,
+                  isSubmitting,
                 }) => (
                   <Form noValidate onSubmit={handleSubmit}>
                     <h1 className="title">{formType === "LOGIN" ? "Login" : "Sign Up"}</h1>
-                    {errorMessage && (
-                      <Alert key={"danger"} variant="danger">
-                        {errorMessage}
-                      </Alert>
-                    )}
+                    {errorMessage ||
+                      (loginErrorMessage && (
+                        <Alert key={"danger"} variant="danger">
+                          {errorMessage || loginErrorMessage}
+                        </Alert>
+                      ))}
                     {formType === "SIGN_UP" && (
                       <Row>
                         <Form.Group as={Col} md="6" controlId="validationFormik01">
@@ -163,7 +222,7 @@ class Login extends Component {
                       <Form.Group as={Col} md="12" controlId="validationFormik01">
                         <Form.Label>Password</Form.Label>
                         <Form.Control
-                          type="text"
+                          type="password"
                           name="password"
                           value={values.password}
                           onChange={handleChange}
@@ -210,7 +269,7 @@ class Login extends Component {
                     <Row className="control-section">
                       <Col xs={6} md={6}>
                         {formType === "LOGIN" ? (
-                          <Button type="submit" variant="primary">
+                          <Button type="submit" variant="primary" disabled={isSubmitting}>
                             Login
                           </Button>
                         ) : (
@@ -224,6 +283,7 @@ class Login extends Component {
                                 formType: "LOGIN",
                               });
                             }}
+                            disabled={isSubmitting}
                           >
                             Login
                           </Button>
@@ -231,7 +291,7 @@ class Login extends Component {
                       </Col>
                       <Col xs={6} md={6}>
                         {formType === "SIGN_UP" ? (
-                          <Button type="submit" variant="primary">
+                          <Button type="submit" variant="primary" disabled={isSubmitting}>
                             Sign Up
                           </Button>
                         ) : (
@@ -244,7 +304,9 @@ class Login extends Component {
                               this.setState({
                                 formType: "SIGN_UP",
                               });
+                              this.props.logout();
                             }}
+                            disabled={isSubmitting}
                           >
                             Sign Up
                           </Button>
@@ -265,4 +327,21 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToPros = (state) => {
+  return {
+    auth: state.auth,
+    loginErrorMessage: state.auth.loginErrorMessage,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    initiateLogin: (data) => dispatch(authAction.initiateLogin()),
+    successLogin: (data) => dispatch(authAction.successLogin()),
+    login: (data) => dispatch(authAction.login(data)),
+    logout: (data) => dispatch(authAction.logOut()),
+    setLoginError: (data) => dispatch(authAction.setLoginError(data)),
+  };
+};
+
+export default connect(mapStateToPros, mapDispatchToProps)(Login);

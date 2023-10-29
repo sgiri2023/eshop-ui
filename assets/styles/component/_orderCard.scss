@@ -1,0 +1,52 @@
+.order-card-container{
+    .order-card{
+        margin-bottom: 20px;
+        min-height: 143px;
+        padding: 20px;
+
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        align-items: center;
+        position: relative;
+
+        .product-image{
+           height: 100%;
+           width: 75px;
+           // border: 1px solid red; 
+           img{
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+           }
+        }
+
+        .product-description{
+            height: 100px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            .product-name{
+                font-weight: 600;
+                font-size: 20px;
+            }
+            .product-description{
+                font-weight: 400;
+            }
+        }
+
+        .amount-section{
+            height: 100px;
+            width: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            .paid-amount{
+                font-weight: 600;
+                font-size: 20px;
+            }
+        }
+    }
+}

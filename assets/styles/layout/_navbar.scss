@@ -1,3 +1,19 @@
+.expand-logo{
+    .navbar-brand-wrapper{
+        width: $sidepanel-max-width;
+    }
+    .navbar-menu-wrapper{
+        width: calc(100% - #{$sidepanel-max-width});
+    }
+}
+.collapse-logo{
+    .navbar-brand-wrapper{
+        width: $sidepanel-min-width;
+    }
+    .navbar-menu-wrapper{
+        width: calc(100% - #{$sidepanel-min-width});
+    }
+}
 .navbar{
     background: #fff;
     box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
@@ -5,16 +21,19 @@
     .navbar-brand-wrapper{
         height: $navbar-height;
         padding: 0px 20px;
-        width: $sidepanel-max-width;
+        transition: width 0.4s;
         .brand-logo{
             svg{
                 width: 3rem;
                 height: 3rem
             }
         }
+        .navbar-brand{
+            margin-right: 0px ;
+        }
     }
     .navbar-menu-wrapper{
-        width: calc(100% - #{$sidepanel-max-width});
+        transition: width 0.4s;
         height: $navbar-height;
         .navbar-menu-icon{
             font-size: 30px;
@@ -101,6 +120,7 @@
                 gap: 5px;
                 padding: 5px 20px;
                 cursor: pointer;
+                min-width: 165px;
                 //border: 2px solid red;
                 border-radius: 50px;
                 background-color: #095ad2;
@@ -116,6 +136,52 @@
 
                 &:hover{
                     box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
+                }
+            }
+            .wallet-balance-conatiner{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 5px;
+                padding: 5px 20px;
+                cursor: pointer;
+                //border: 2px solid red;
+                border-radius: 50px;
+                background-color: #095ad2;
+                color: white;
+                box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
+                margin-right: 5px;
+                margin-left: 5px;
+            }
+            .cart-conatiner{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 5px;
+                padding: 5px 20px;
+                cursor: pointer;
+                //border: 2px solid red;
+                border-radius: 50px;
+                background-color: #095ad2;
+                color: white;
+                box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
+                margin-right: 5px;
+                margin-left: 5px;
+                position: relative;
+                .order-product-count{
+                    position: absolute;
+                    min-width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 2px;
+                    border: 1px solid red;
+                    background-color: red;
+                    top: -14px;
+                    font-size: 12px;
+                    right: 0px;
                 }
             }
         }

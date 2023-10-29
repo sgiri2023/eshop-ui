@@ -1,0 +1,70 @@
+.account-left-tab-container, .account-right-tab-container{
+    height: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+}
+
+.account-right-tab-container{
+    min-height: 500px;
+    padding: 20px !important;
+}
+
+.tab-title{
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.addess-add-container{
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    border-radius: 2px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding: 20px;
+    .icon{
+        font-size: 20px;
+        color: #2874f0;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .title{
+        font-size: 14px;
+        color: #2874f0;
+        font-weight: 600;
+        cursor: pointer;
+    }
+}
+.address-list-container{
+    margin-bottom: 10px;
+    .address-container{
+        border: 1px solid #e0e0e0;
+        margin-top: 10px;
+        border-radius: 2px 0;
+        overflow: hidden;
+        padding: 20px;
+
+        .address-tag{
+            margin-bottom: 10px;
+            .tag{
+                text-transform: uppercase;
+                font-size: 11px;
+                color: #878787;
+                vertical-align: middle;
+                padding: 4px 7px;
+                border-radius: 2px;
+                background-color: #f0f0f0;
+                font-weight: 500;
+                margin-right: 15px;
+            }
+        }
+        .address-fullname{
+            line-height: 1.5;
+            font-weight: 500;
+        }
+    }
+}

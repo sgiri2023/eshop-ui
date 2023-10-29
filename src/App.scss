@@ -9,6 +9,18 @@
 @import "/assets/styles/layout/body";
 @import "/assets/styles/layout/sidebar";
 @import "/assets/styles/layout/mainpannel";
+@import "/assets/styles/layout/tooltip";
 
 // ========= Component
 @import "/assets/styles/component/login";
+@import "/assets/styles/component/loading";
+@import "/assets/styles/component/profile";
+@import "/assets/styles/commonStyle.scss";
+@import "/assets/styles/flexStyle.scss";
+@import "/assets/styles/component/product_card";
+@import "/assets/styles/component/orderCard";
+@import "/assets/styles/component/cart";
+
+// ================ UI ===============
+@import "/assets/styles/component/UI/progressSteps";
+@import "/assets/styles/component/UI/account";

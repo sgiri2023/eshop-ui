@@ -3,6 +3,13 @@ import { Link } from "react-router-dom";
 import { Collapse } from "react-bootstrap";
 import { ROUTE_LINK } from "../../../constant/sidebarRouteLink";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
+import { connect } from "react-redux";
+import { GrHomeRounded } from "react-icons/gr";
+import { CgProfile } from "react-icons/cg";
+import { MdProductionQuantityLimits } from "react-icons/md";
+import { TbReportAnalytics } from "react-icons/tb";
+import { HiOutlineShoppingCart } from "react-icons/hi";
+import { GoHome } from "react-icons/go";
 
 class SidebarComponent extends Component {
   constructor() {
@@ -20,8 +27,14 @@ class SidebarComponent extends Component {
 
   render() {
     const { activeRoute } = this.state;
+
     return (
-      <nav className="sidebar sidebar-offcanvas" id="sidebar">
+      <nav
+        className={`sidebar sidebar-offcanvas ${
+          this.props.appInfo.isSideBarExpand === true ? "expand-sidebar" : "collapse-sidebar"
+        }`}
+        id="sidebar"
+      >
         <ul className="nav">
           {ROUTE_LINK.map((link, index) => (
             <li className="nav-item nav-profile " key={index}>
@@ -42,7 +55,22 @@ class SidebarComponent extends Component {
                   }`}
                   to={link.link}
                 >
-                  {link.name}
+                  {link.name.toLowerCase() === "profile" ? (
+                    <CgProfile className="sidebar-menu-icon" />
+                  ) : link.name.toLowerCase() === "products" ? (
+                    <MdProductionQuantityLimits className="sidebar-menu-icon" />
+                  ) : link.name.toLowerCase() === "report" ? (
+                    <TbReportAnalytics className="sidebar-menu-icon" />
+                  ) : link.name.toLowerCase() === "order" ? (
+                    <HiOutlineShoppingCart className="sidebar-menu-icon" />
+                  ) : (
+                    <GoHome className="sidebar-menu-icon" />
+                  )}
+
+                  <span className="sidebar-menu-parent-label">
+                    {" "}
+                    {this.props.appInfo.isSideBarExpand === true ? link.name : null}
+                  </span>
                 </Link>
                 {link.subLink.length > 0 ? (
                   activeRoute === link.name ? (
@@ -81,4 +109,10 @@ class SidebarComponent extends Component {
   }
 }
 
-export default SidebarComponent;
+const mapStateToPros = (state) => {
+  return {
+    appInfo: state.appInfo,
+  };
+};
+
+export default connect(mapStateToPros)(SidebarComponent);
