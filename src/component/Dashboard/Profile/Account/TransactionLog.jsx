@@ -21,6 +21,7 @@ class TransactionLog extends Component {
               <th>Type</th>
               <th>Amount</th>
               <th>Status</th>
+              <th>description</th>
             </tr>
           </thead>
           <tbody>
@@ -60,6 +61,7 @@ class TransactionLog extends Component {
                       ? "Completed"
                       : transaction.transactionStatus}
                   </td>
+                  <td>{transaction.description}</td>
                 </tr>
               ))
             ) : (
