@@ -2,17 +2,43 @@ import { Component } from "react";
 import { Link } from "react-router-dom";
 import { BiMenu, BiSearchAlt2, BiLogOutCircle } from "react-icons/bi";
 import { AiOutlineUser } from "react-icons/ai";
-
+import { connect } from "react-redux";
+import { authAction } from "../../../store/slice/auth-slice";
+import { appInfoAction } from "../../../store/slice/app-info";
+import { FaWallet, FaShoppingCart } from "react-icons/fa";
+import NumberFormat from "react-number-format";
 class NavbarComponent extends Component {
   constructor() {
     super();
     this.state = { data: "" };
   }
+
+  handleLogout = () => {
+    this.props.logout();
+  };
+
+  handleSideBar = () => {
+    if (this.props.appInfo.isSideBarExpand === true) {
+      this.props.handleSidebarCollapse();
+    } else {
+      this.props.handleSidebarExpand();
+    }
+  };
+
+  handleGoToCart = () => {
+    console.log(".......This Porps: ", this.props);
+    this.props.history.push("/dashboard/profile/cart");
+  };
+
   render() {
     return (
-      <nav className="navbar default-layout-navbar col-lg-12 col-12  fixed-top d-flex flex-row">
+      <nav
+        className={`navbar default-layout-navbar col-lg-12 col-12  fixed-top d-flex flex-row ${
+          this.props.appInfo.isSideBarExpand === true ? "expand-logo" : "collapse-logo"
+        }`}
+      >
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <Link className="navbar-brand brand-logo" to="/">
+          <Link className="navbar-brand brand-logo" to="/dashboard/home">
             <svg
               width="128"
               height="146"
@@ -37,25 +63,62 @@ class NavbarComponent extends Component {
         </div>
         <div className="navbar-menu-wrapper d-flex align-items-stretch">
           <div className="d-flex align-items-center menu-icon-wrapper">
-            <BiMenu className="navbar-menu-icon" />
+            <BiMenu className="navbar-menu-icon" onClick={this.handleSideBar} />
           </div>
           {/*Resource From - https://csshint.com/css-search-boxes/ */}
           <div className="search-form-wrapper">
             <div className="navbar-main-search-form d-flex align-items-center">
-              <input type="search" placeholder="Search" class="search-input"></input>
-              <button class="search-button">
+              <input type="search" placeholder="Search" className="search-input"></input>
+              <button className="search-button">
                 <BiSearchAlt2 className="search-icon" />
               </button>
             </div>
           </div>
           <div className="control-section">
-            <div className="navbar-logout">
+            <div
+              className="navbar-logout tooltip-custom"
+              onClick={() => {
+                this.handleLogout();
+              }}
+            >
               <BiLogOutCircle className="logout-icon" />
+              <span class="tooltiptext">Logout</span>
             </div>
-            <div className="navbar-profile">
+            <div className="navbar-profile tooltip-custom">
               <AiOutlineUser className="profile-icon" />
-              <span className="profile-name">{"Smith"}</span>
+              <span className="profile-name">
+                {this.props.userDetails.firstName} {this.props.userDetails.lastName}
+              </span>
+              <span class="tooltiptext">Profile</span>
             </div>
+            {this.props.userDetails.isAdmin === false &&
+              this.props.accountDetails.isLoading === false &&
+              this.props.accountDetails.bankDetails.length > 0 && (
+                <div className="wallet-balance-conatiner">
+                  <FaWallet />
+                  <span>
+                    <NumberFormat
+                      value={this.props.accountDetails.bankDetails[0].balance}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      prefix={"₹"}
+                      decimalScale={2}
+                      fixedDecimalScale={true}
+                      thousandsGroupStyle={"thousand"}
+                      renderText={(value) => <span> {value}</span>}
+                    />
+                  </span>
+                </div>
+              )}
+
+            {this.props.userDetails.isCustomer === true && (
+              <Link className="cart-conatiner" to="/dashboard/cart">
+                <FaShoppingCart />
+                {this.props.cartDetails.length > 0 && (
+                  <span className="order-product-count">{this.props.cartDetails.length}</span>
+                )}
+              </Link>
+            )}
           </div>
         </div>
       </nav>
@@ -63,4 +126,23 @@ class NavbarComponent extends Component {
   }
 }
 
-export default NavbarComponent;
+const mapStateToPros = (state) => {
+  console.log("Store from navbar: ", state);
+  return {
+    auth: state.auth,
+    appInfo: state.appInfo,
+    userDetails: state.userDetails.userDetails,
+    accountDetails: state.accountDetails,
+    cartDetails: state.cartDetails.cartDetails,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: (data) => dispatch(authAction.logOut()),
+    handleSidebarExpand: (data) => dispatch(appInfoAction.handleExpand()),
+    handleSidebarCollapse: (data) => dispatch(appInfoAction.handleCollapse()),
+  };
+};
+
+export default connect(mapStateToPros, mapDispatchToProps)(NavbarComponent);

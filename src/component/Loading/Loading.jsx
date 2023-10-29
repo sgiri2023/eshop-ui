@@ -1,18 +1,17 @@
 import { Component } from "react";
-import ProfileTemplate from "./ProfileTemplate";
 
-class Profile extends Component {
+class Loading extends Component {
   constructor() {
     super();
     this.state = { data: "" };
   }
   render() {
     return (
-      <div>
-        <ProfileTemplate />
+      <div className="loading-container">
+        <h1>Loading...</h1>
       </div>
     );
   }
 }
 
-export default Profile;
+export default Loading;

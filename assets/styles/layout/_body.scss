@@ -8,13 +8,15 @@
 
     .main-panel-container{
         transition: width .25s ease,margin .25s ease;
-        width: calc(100% - #{$sidepanel-max-width});
+        // width: calc(100% - #{$sidepanel-max-width});
         min-height: calc(100vh - #{$navbar-height});
         display: flex;
         flex-direction: column;
+        flex-grow: 1;
+        // border: 2px solid red;
         .main-pannel-wrapper{
             background: #f2edf3;
-            padding: 2.75rem 2.25rem;
+            padding: 2.25rem 2.25rem;
             width: 100%;
             flex-grow: 1;
         }
