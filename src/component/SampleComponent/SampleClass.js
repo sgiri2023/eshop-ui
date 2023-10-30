@@ -6,7 +6,7 @@ class SampleClass extends Component {
     this.state = { data: "" };
   }
   render() {
-    return <h2>SampleClass</h2>;
+    return <div>SampleClass</div>;
   }
 }
 

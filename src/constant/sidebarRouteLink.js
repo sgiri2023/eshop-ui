@@ -29,6 +29,12 @@ export const ROUTE_LINK = [
     subLink: [],
   },
   {
+    id: 6,
+    name: "Master Products",
+    link: "/dashboard/master-products",
+    subLink: [],
+  },
+  {
     id: 2,
     name: "Order",
     link: "/dashboard/order",
