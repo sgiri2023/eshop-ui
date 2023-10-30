@@ -1,11 +1,24 @@
 import { Component } from "react";
 import axios from "./../../../../axiosClient/eaxios";
-import { Table, Button } from "react-bootstrap";
-
+import { Table, Button, Image, Modal } from "react-bootstrap";
+import ProductBrandForm from "./ProductBrandForm";
 class ProductBrand extends Component {
   constructor() {
     super();
-    this.state = { data: "", record: [], isLoading: false, errorMessage: "" };
+    this.state = {
+      data: "",
+      record: [],
+      isLoading: false,
+      errorMessage: "",
+      productCategoryList: [],
+      isProductCategoryListLoading: false,
+      productSubCategoryList: [],
+      isProductSubCategoryListLoading: false,
+      isAddModalOpen: false,
+      modalMode: "",
+      modalTitle: "",
+      initialValues: "",
+    };
   }
 
   getAllProductBrand = () => {
@@ -31,14 +44,109 @@ class ProductBrand extends Component {
     );
   };
 
+  getAllProductCategory = () => {
+    this.setState(
+      {
+        isProductCategoryListLoading: true,
+      },
+      () => {
+        axios
+          .get(`/api/master-product/category/list`)
+          .then((res) => {
+            this.setState({
+              productCategoryList: res.data,
+              isProductCategoryListLoading: false,
+            });
+          })
+          .catch((err) => {
+            this.setState({
+              isProductCategoryListLoading: false,
+            });
+          });
+      }
+    );
+  };
+
+  getAllProductSubCategory = () => {
+    this.setState(
+      {
+        isProductSubCategoryListLoading: true,
+      },
+      () => {
+        axios
+          .get(`/api/master-product/sub-category/list`)
+          .then((res) => {
+            this.setState({
+              productSubCategoryList: res.data,
+              isProductSubCategoryListLoading: false,
+            });
+          })
+          .catch((err) => {
+            this.setState({
+              isProductSubCategoryListLoading: false,
+            });
+          });
+      }
+    );
+  };
+
+  handleAddBrand = () => {
+    let initialValues = {
+      brandName: "",
+      manufacturerDetails: "",
+      categoryId: "",
+      categoryDetails: "",
+      subCategoryId: "",
+      subCategoryDetails: "",
+    };
+    this.setState(
+      {
+        modalMode: "ADD",
+        modalTitle: "Add Product Brand",
+        initialValues,
+      },
+      () => {
+        this.handleOpenAddModal();
+      }
+    );
+  };
+
+  handleOpenAddModal = () => {
+    this.setState({
+      isAddModalOpen: true,
+    });
+  };
+
+  handleCloseModal = () => {
+    this.setState({
+      isAddModalOpen: false,
+      modalMode: "",
+      modalTitle: "",
+    });
+  };
+
   componentDidMount() {
+    this.getAllProductCategory();
+    this.getAllProductSubCategory();
     this.getAllProductBrand();
   }
+
   render() {
-    const { record } = this.state;
+    const {
+      record,
+      isAddModalOpen,
+      modalMode,
+      modalTitle,
+      initialValues,
+      productCategoryList,
+      isProductCategoryListLoading,
+      productSubCategoryList,
+      isProductSubCategoryListLoading,
+    } = this.state;
+
     return (
       <div className="boxshadow_template_one master-product-inner-container">
-        <Button>Add Brand</Button>
+        <Button onClick={this.handleAddBrand}>Add Brand</Button>
         <div className="">
           <Table responsive="sm">
             <thead>
@@ -67,6 +175,29 @@ class ProductBrand extends Component {
             </tbody>
           </Table>
         </div>
+
+        <Modal
+          show={isAddModalOpen}
+          onHide={this.handleCloseModal}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>{modalTitle}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ProductBrandForm
+              mode={modalMode}
+              initialValues={initialValues}
+              onCancelModal={this.handleCloseModal}
+              reloadList={this.getAllProductBrand}
+              productCategoryList={productCategoryList}
+              isProductCategoryListLoading={isProductCategoryListLoading}
+              productSubCategoryList={productSubCategoryList}
+              isProductSubCategoryListLoading={isProductSubCategoryListLoading}
+            />
+          </Modal.Body>
+        </Modal>
       </div>
     );
   }
