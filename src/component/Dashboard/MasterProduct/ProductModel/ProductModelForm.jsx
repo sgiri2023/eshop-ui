@@ -64,7 +64,7 @@ class ProductModelForm extends Component {
     console.log("Payload: ", payload);
 
     axios
-      .post(`http://localhost:8090/api/master-product/model/add`, payload)
+      .post(`/api/master-product/model/add`, payload)
       .then((res) => {
         console.log(".......Add Product Model Response: ", res.data);
         this.props.onCancelModal();
@@ -90,6 +90,7 @@ class ProductModelForm extends Component {
       productBrandList,
       isProductBrandListLoading,
     } = this.props;
+
     return (
       <div>
         <Formik
