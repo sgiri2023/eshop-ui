@@ -25,8 +25,24 @@ class ProductCard extends Component {
     let modifyProduct = { ...product };
     modifyProduct.purchaseQuantity = purchaseQuantity;
     let currentCartDetails = [...this.props.cartDetails];
-    currentCartDetails.push(modifyProduct);
-    this.props.updateCart(currentCartDetails);
+    let tempFinalCartList = [];
+
+    let isDuplicateProductFoud = false;
+
+    currentCartDetails.map((cart) => {
+      let tempCartDetails = { ...cart };
+      if (Number(tempCartDetails.id) === Number(product.id)) {
+        isDuplicateProductFoud = true;
+        tempCartDetails.purchaseQuantity = tempCartDetails.purchaseQuantity + 1;
+      }
+      tempFinalCartList.push(tempCartDetails);
+    });
+
+    if (isDuplicateProductFoud === false) {
+      tempFinalCartList.push(modifyProduct);
+    }
+
+    this.props.updateCart(tempFinalCartList);
   };
 
   render() {
