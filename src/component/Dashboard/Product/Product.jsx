@@ -1,6 +1,7 @@
 import { Component } from "react";
 import ProductCard from "./ProductCard/ProductCard";
 import axios from "./../../../axiosClient/eaxios";
+import { Table, Button } from "react-bootstrap";
 
 class Product extends Component {
   constructor() {
@@ -39,6 +40,7 @@ class Product extends Component {
     const { productList } = this.state;
     return (
       <div>
+        <Button>Add Product</Button>
         <div className="product-list-container">
           {productList.length > 0 &&
             productList.map((product, index) => (

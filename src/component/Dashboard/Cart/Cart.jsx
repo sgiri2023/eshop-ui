@@ -15,7 +15,7 @@ class Cart extends Component {
     const { cartDetails } = this.props;
     let totalPrice = 0;
     cartDetails.map((cartItem) => {
-      totalPrice = totalPrice + cartItem.actualPrice * cartItem.purchaseQuantity;
+      totalPrice = totalPrice + cartItem.marketRatePrice * cartItem.purchaseQuantity;
     });
     return totalPrice;
   };
@@ -25,7 +25,8 @@ class Cart extends Component {
     let totalPrice = 0;
     cartDetails.map((cartItem) => {
       totalPrice =
-        totalPrice + (cartItem.actualPrice - cartItem.discountedPrice) * cartItem.purchaseQuantity;
+        totalPrice +
+        (cartItem.marketRatePrice - cartItem.discountedPrice) * cartItem.purchaseQuantity;
     });
     return totalPrice;
   };
