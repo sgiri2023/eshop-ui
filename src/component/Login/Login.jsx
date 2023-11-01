@@ -101,7 +101,7 @@ class Login extends Component {
           setSubmitting(false);
           this.props.successLogin();
           this.props.login(res.data);
-          this.props.history.push("/dashboard/home");
+          this.props.history.push("/dashboard/product");
         })
         .catch((err) => {
           console.log("Login Error: ", err);
