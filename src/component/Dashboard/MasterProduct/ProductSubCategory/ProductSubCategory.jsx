@@ -1,11 +1,23 @@
 import { Component } from "react";
 import axios from "./../../../../axiosClient/eaxios";
-import { Table, Button } from "react-bootstrap";
+import ProductSubCategoryForm from "./ProductSubCategoryForm";
+import { Table, Button, Image, Modal } from "react-bootstrap";
 
 class ProductSubCategory extends Component {
   constructor() {
     super();
-    this.state = { data: "", record: [], isLoading: false, errorMessage: "" };
+    this.state = {
+      data: "",
+      record: [],
+      isLoading: false,
+      errorMessage: "",
+      productCategoryList: [],
+      isProductCategoryListLoading: false,
+      isModalOpen: false,
+      modalMode: "",
+      modalTitle: "",
+      initialValues: "",
+    };
   }
 
   getAllProductSubCategory = () => {
@@ -31,15 +43,79 @@ class ProductSubCategory extends Component {
     );
   };
 
+  getAllProductCategory = () => {
+    this.setState(
+      {
+        isProductCategoryListLoading: true,
+      },
+      () => {
+        axios
+          .get(`/api/master-product/category/list`)
+          .then((res) => {
+            this.setState({
+              productCategoryList: res.data,
+              isProductCategoryListLoading: false,
+            });
+          })
+          .catch((err) => {
+            this.setState({
+              isProductCategoryListLoading: false,
+            });
+          });
+      }
+    );
+  };
+
+  handleAddSubCategoryMasterProduct = () => {
+    let initialValues = {
+      categoryId: "",
+      categoryDetails: "",
+      subCategoryName: "",
+    };
+    this.setState(
+      {
+        modalMode: "ADD",
+        modalTitle: "Add Product Sub-Category",
+        initialValues,
+      },
+      () => {
+        this.handleOpenModal();
+      }
+    );
+  };
+
+  handleOpenModal = () => {
+    this.setState({
+      isModalOpen: true,
+    });
+  };
+
+  handleCloseModal = () => {
+    this.setState({
+      isModalOpen: false,
+      modalMode: "",
+      modalTitle: "",
+    });
+  };
+
   componentDidMount() {
     this.getAllProductSubCategory();
+    this.getAllProductCategory();
   }
 
   render() {
-    const { record } = this.state;
+    const {
+      record,
+      productCategoryList,
+      isProductCategoryListLoading,
+      isModalOpen,
+      modalMode,
+      modalTitle,
+      initialValues,
+    } = this.state;
     return (
       <div className="boxshadow_template_one master-product-inner-container">
-        <Button>Add Sub-Category</Button>
+        <Button onClick={this.handleAddSubCategoryMasterProduct}>Add Sub-Category</Button>
         <div className="">
           <Table responsive="sm">
             <thead>
@@ -64,6 +140,22 @@ class ProductSubCategory extends Component {
             </tbody>
           </Table>
         </div>
+
+        <Modal show={isModalOpen} onHide={this.handleCloseModal} backdrop="static" keyboard={false}>
+          <Modal.Header closeButton>
+            <Modal.Title>{modalTitle}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ProductSubCategoryForm
+              mode={modalMode}
+              initialValues={initialValues}
+              onCancelModal={this.handleCloseModal}
+              reloadList={this.getAllProductSubCategory}
+              productCategoryList={productCategoryList}
+              isProductCategoryListLoading={isProductCategoryListLoading}
+            />
+          </Modal.Body>
+        </Modal>
       </div>
     );
   }
