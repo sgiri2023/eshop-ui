@@ -23,6 +23,7 @@ class MasterProduct extends Component {
             });
           }}
           className="mb-3 horizoontal-tab"
+          style={{ marginBottom: "0px !important" }}
         >
           <Tab eventKey="category" title="Category">
             <ProductCategory />

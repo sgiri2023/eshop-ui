@@ -18,16 +18,16 @@
   }
   .card {
     max-height: 500px;
-    width: 330px;
+    width: 289px;
     background-color: #fff;
     border-radius: 10px;
     padding: 20px;
     font-family: "Poppins", sans-serif;
   }
   .seller-info{
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
-    // color: #2874f0;
+    color: #65696d;
   }
 
   .top_part {
@@ -81,10 +81,17 @@
     margin-bottom: 30px;
     object-fit: contain;
   }
-  .vitamin {
+  .model-name-rating {
+    height: 30px;
+    font-weight: 600;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items:flex-start;
+    .model-name{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
   .rating {
     display: flex;
@@ -116,17 +123,20 @@
   .rating:hover > input:checked ~ label:before {
     opacity: 0.4;
   }
-  .reviews {
+  .variant {
     display: flex;
     margin-top: 5px;
     justify-content: space-between;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  .reviews p {
+  .variant p {
     font-size: 12px;
     font-weight: 700;
     color: #9f9f9f;
   }
-  .reviews u {
+  .variant u {
     font-size: 11px;
     color: red;
     cursor: pointer;
@@ -227,6 +237,42 @@
     padding: 0 15px;
     font-weight: 700;
   }
+
+  .price-section{
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 10px;
+    .actual-price{
+        text-decoration: line-through;    
+        margin-right: 10px;
+        font-weight: 500;
+    }
+    .discounted-price{      
+        color: #212121;
+        display: inline-block;
+        margin-right: 8px;
+    }
+    .discount-rate{
+        color: #388e3c;
+        margin-right: 10px;
+    }
+  }
+
+  .add-to-cart{
+    margin-top: 20px;
+    button{
+      padding: 10px 8px;
+      border-radius: 2px;
+      box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+      width: 98%;
+      border: none;
+      float: left;
+      background: #ff9f00;
+      color: #fff;
+      font-weight: 600;
+    }
+  }
+
   .money_bag {
     display: flex;
     justify-content: center;

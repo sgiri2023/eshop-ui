@@ -47,7 +47,7 @@ class ProductCard extends Component {
 
   render() {
     const { heart, addbag } = this.state;
-    const { product, key } = this.props;
+    const { product, key, userDetails } = this.props;
     return (
       <div className="product-card-container">
         <div className="container" key={key}>
@@ -66,8 +66,8 @@ class ProductCard extends Component {
             <div className="image">
               <img src={product.productImageUrl} />
             </div>
-            <div className="vitamin">
-              <p>{product.modelName}</p>
+            <div className="model-name-rating">
+              <p className="model-name">{product.modelName}</p>
               <div className="rating" key={key}>
                 <input
                   type="radio"
@@ -116,37 +116,48 @@ class ProductCard extends Component {
                 <label htmlFor={`${product.id}-1`}>☆</label>
               </div>
             </div>
-            <div className="reviews">
+            <div className="variant">
               <p>{product.variant}</p>
               {/* <u>144 Views</u> */}
             </div>
             <div className="seller-info">Seller: {product.sellerName}</div>
-            <div className="last_buttons">
-              <div className="qty_btn">
-                {/* <i className="fa fa-minus"></i>
-                <p>{addbag}</p>
-                <i className="fa fa-plus"></i> */}
-              </div>
-              <div className="money_bag">
-                <p>
-                  <strong>
-                    <NumberFormat
-                      value={product.discountedPrice}
-                      displayType={"text"}
-                      thousandSeparator={true}
-                      prefix={"₹"}
-                      decimalScale={2}
-                      fixedDecimalScale={true}
-                      thousandsGroupStyle={"thousand"}
-                      renderText={(value) => <span> {value}</span>}
-                    />
-                  </strong>
-                </p>
+            <div className="price-section">
+              <span className="actual-price">
+                <NumberFormat
+                  value={product.marketRatePrice}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"₹"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
+                  thousandsGroupStyle={"thousand"}
+                  renderText={(value) => <span> {value}</span>}
+                />
+              </span>{" "}
+              <span className="discounted-price">
+                <NumberFormat
+                  value={product.priceAfterDiscount}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"₹"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
+                  thousandsGroupStyle={"thousand"}
+                  renderText={(value) => <span> {value}</span>}
+                />
+              </span>{" "}
+              {product.discountRate > 0 && (
+                <span className="discount-rate">
+                  {product.discountRate}
+                  {"%"} off
+                </span>
+              )}
+            </div>
 
-                <button onClick={() => this.handleAddToCart(product)}>
-                  <i className="fa fa-shopping-bag"></i>Add to bag
-                </button>
-              </div>
+            <div className="add-to-cart">
+              {userDetails.isCustomer === true && (
+                <button onClick={() => this.handleAddToCart(product)}>Add to Cart</button>
+              )}
             </div>
           </div>
         </div>
@@ -158,6 +169,7 @@ class ProductCard extends Component {
 const mapStateToPros = (state) => {
   return {
     cartDetails: state.cartDetails.cartDetails,
+    userDetails: state.userDetails.userDetails,
   };
 };
 

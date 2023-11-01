@@ -76,7 +76,7 @@ class CartItemCard extends Component {
             )}{" "}
             <span className="discounted-price">
               <NumberFormat
-                value={cartItemDetails.discountedPrice * cartItemDetails.purchaseQuantity}
+                value={cartItemDetails.priceAfterDiscount * cartItemDetails.purchaseQuantity}
                 displayType={"text"}
                 thousandSeparator={true}
                 prefix={"₹"}
