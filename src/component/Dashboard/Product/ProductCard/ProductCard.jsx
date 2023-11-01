@@ -122,18 +122,20 @@ class ProductCard extends Component {
             </div>
             <div className="seller-info">Seller: {product.sellerName}</div>
             <div className="price-section">
-              <span className="actual-price">
-                <NumberFormat
-                  value={product.marketRatePrice}
-                  displayType={"text"}
-                  thousandSeparator={true}
-                  prefix={"₹"}
-                  decimalScale={2}
-                  fixedDecimalScale={true}
-                  thousandsGroupStyle={"thousand"}
-                  renderText={(value) => <span> {value}</span>}
-                />
-              </span>{" "}
+              {product.discountRate > 0 && (
+                <span className="actual-price">
+                  <NumberFormat
+                    value={product.marketRatePrice}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={"₹"}
+                    decimalScale={2}
+                    fixedDecimalScale={true}
+                    thousandsGroupStyle={"thousand"}
+                    renderText={(value) => <span> {value}</span>}
+                  />{" "}
+                </span>
+              )}
               <span className="discounted-price">
                 <NumberFormat
                   value={product.priceAfterDiscount}
