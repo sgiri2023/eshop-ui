@@ -46,7 +46,7 @@ class Cart extends Component {
 
     cartDetails.map((product) => {
       let invoiceRequest = {
-        unitPrice: product.actualPrice,
+        unitPrice: product.marketRatePrice,
         discountRate: product.discountRate,
         quantity: product.purchaseQuantity,
         taxRate: 0,
