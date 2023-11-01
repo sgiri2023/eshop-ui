@@ -1,11 +1,21 @@
 import { Component } from "react";
 import axios from "./../../../../axiosClient/eaxios";
-import { Table, Button } from "react-bootstrap";
+import { Table, Button, Image, Modal } from "react-bootstrap";
+import ProductCategoryForm from "./ProductCategoryForm";
 
 class ProductCategory extends Component {
   constructor() {
     super();
-    this.state = { data: "", record: [], isLoading: false, errorMessage: "" };
+    this.state = {
+      data: "",
+      record: [],
+      isLoading: false,
+      errorMessage: "",
+      isModalOpen: false,
+      modalMode: "",
+      modalTitle: "",
+      initialValues: "",
+    };
   }
 
   getAllProductCategory = () => {
@@ -31,15 +41,45 @@ class ProductCategory extends Component {
     );
   };
 
+  handleAddCategoryMasterProduct = () => {
+    let initialValues = {
+      categoryName: "",
+    };
+    this.setState(
+      {
+        modalMode: "ADD",
+        modalTitle: "Add Product Category",
+        initialValues,
+      },
+      () => {
+        this.handleOpenModal();
+      }
+    );
+  };
+
+  handleOpenModal = () => {
+    this.setState({
+      isModalOpen: true,
+    });
+  };
+
+  handleCloseModal = () => {
+    this.setState({
+      isModalOpen: false,
+      modalMode: "",
+      modalTitle: "",
+    });
+  };
+
   componentDidMount() {
     this.getAllProductCategory();
   }
 
   render() {
-    const { record } = this.state;
+    const { record, isModalOpen, modalMode, modalTitle, initialValues } = this.state;
     return (
       <div className="boxshadow_template_one master-product-inner-container">
-        <Button>Add Category</Button>
+        <Button onClick={this.handleAddCategoryMasterProduct}>Add Category</Button>
         <div className="">
           <Table responsive="sm">
             <thead>
@@ -62,6 +102,20 @@ class ProductCategory extends Component {
             </tbody>
           </Table>
         </div>
+
+        <Modal show={isModalOpen} onHide={this.handleCloseModal} backdrop="static" keyboard={false}>
+          <Modal.Header closeButton>
+            <Modal.Title>{modalTitle}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ProductCategoryForm
+              mode={modalMode}
+              initialValues={initialValues}
+              onCancelModal={this.handleCloseModal}
+              reloadList={this.getAllProductCategory}
+            />
+          </Modal.Body>
+        </Modal>
       </div>
     );
   }

@@ -192,8 +192,8 @@ class ProductModel extends Component {
               <tr>
                 <th>Category</th>
                 <th>Sub-Category</th>
-                <th>Brand</th>
-                <th>Name</th>
+                <th>Brand Name</th>
+                <th>Model Name</th>
                 <th>Variant</th>
                 <th>M.R.P</th>
                 <th>Image</th>
