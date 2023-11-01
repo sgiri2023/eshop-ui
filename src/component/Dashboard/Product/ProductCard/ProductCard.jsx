@@ -45,9 +45,22 @@ class ProductCard extends Component {
     this.props.updateCart(tempFinalCartList);
   };
 
+  handleCheckForAddedProductCount = () => {
+    const { product, cartDetails } = this.props;
+    console.log(".......Checking for Added Product: ", product, cartDetails);
+    let quantity = 0;
+    cartDetails.map((cartItem) => {
+      if (Number(cartItem.id) === Number(product.id)) {
+        quantity = cartItem.purchaseQuantity;
+      }
+    });
+
+    return quantity;
+  };
+
   render() {
     const { heart, addbag } = this.state;
-    const { product, key, userDetails } = this.props;
+    const { product, key, userDetails, cartDetails } = this.props;
     return (
       <div className="product-card-container">
         <div className="container" key={key}>
@@ -155,10 +168,16 @@ class ProductCard extends Component {
                 </span>
               )}
             </div>
-
             <div className="add-to-cart">
               {userDetails.isCustomer === true && (
-                <button onClick={() => this.handleAddToCart(product)}>Add to Cart</button>
+                <button onClick={() => this.handleAddToCart(product)}>
+                  Add to Cart{" "}
+                  {cartDetails.length > 0 && this.handleCheckForAddedProductCount() > 0 && (
+                    <span className="added-to-cart-count">
+                      {this.handleCheckForAddedProductCount()}
+                    </span>
+                  )}
+                </button>
               )}
             </div>
           </div>
