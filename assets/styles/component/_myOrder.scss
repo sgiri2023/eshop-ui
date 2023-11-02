@@ -1,0 +1,65 @@
+.order-card-container{
+
+    .recent-order-container{
+
+        padding: 20px 0px;
+        .order-table-container{
+            .cus-table-header{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                border-radius: 10px 10px 0px 0px;
+                box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+                background-color: #FFFFFF;
+                font-size: 16px;
+                margin-bottom: 2px;
+                .header-item{
+                    padding: 10px 20px;
+                    color: #B1BFC4;
+                    font-weight: 600;
+                    width: 13%;
+                    // white-space: nowrap;
+                    // overflow: hidden;
+                    // text-overflow: ellipsis;
+                }
+            }
+            .cus-table-body{
+                box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+                background-color: #FFFFFF;
+
+                display: flex;
+                flex-direction: column;
+                .cus-table-row{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                    font-size: 12px;
+                    .body-item{
+                        padding: 10px 20px;
+                        color: #446370;
+                        font-weight: 600;
+                        width: 13%; 
+                        // white-space: nowrap;
+                        // overflow: hidden;
+                        // text-overflow: ellipsis;
+                    }
+                    .model-section{
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        gap: 5px;
+                        .model-image{
+                            height: 30px;
+                            width: 30px;
+                            border-radius: 50%;
+                            // border: 1px solid red;
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+}

@@ -7,6 +7,23 @@
 .horizoontal-tab{
 }
 
+.refresh-icon{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    color: black;
+    gap: 10px;
+    &:hover{
+        color: #095AD2;
+    }
+    
+}
+
 .mr-lr-10{
     margin-right: 10px;
     margin-left: 10px;

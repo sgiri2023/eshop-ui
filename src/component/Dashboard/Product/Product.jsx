@@ -4,7 +4,8 @@ import axios from "./../../../axiosClient/eaxios";
 import { connect } from "react-redux";
 import { Table, Button, Image, Modal } from "react-bootstrap";
 import ProductFrom from "./ProductForm";
-
+import { FiRefreshCcw } from "react-icons/fi";
+// FiRefreshCcw
 class Product extends Component {
   constructor() {
     super();
@@ -188,6 +189,10 @@ class Product extends Component {
     });
   };
 
+  handleRefresh = () => {
+    this.getProductList();
+  };
+
   componentDidMount() {
     this.getProductList();
 
@@ -219,6 +224,9 @@ class Product extends Component {
         {userDetails.isCustomer === false && (
           <Button onClick={() => this.handleAddProductModal()}>Add Product</Button>
         )}
+        <div className="refresh-icon">
+          <FiRefreshCcw onClick={() => this.handleRefresh()} />
+        </div>
         <div className="product-list-container">
           {productList.length > 0 &&
             productList.map((product, index) => (
