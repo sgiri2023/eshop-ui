@@ -60,6 +60,63 @@ class OrderTable extends Component {
     );
   };
 
+  getAdminAllInvoiceList = () => {
+    this.setState(
+      {
+        isLoading: true,
+      },
+      () => {
+        axios
+          .get(`/api/invoice/admin/get-invoice-list`)
+          .then((res) => {
+            console.log(".......Invoice List: ", res.data);
+            this.setState({
+              invoiceList: res.data,
+              isLoading: false,
+            });
+          })
+          .catch((err) => {
+            console.log("Error: ", err);
+            this.setState({
+              isLoading: false,
+            });
+          });
+      }
+    );
+  };
+
+  handleInvoiceStateUpdate = (invoiceId, invoiceState) => {
+    let payload = {
+      invoiceState: invoiceState,
+    };
+    this.setState(
+      {
+        isLoading: true,
+      },
+      () => {
+        axios
+          .put(`/api/invoice/update-state/${invoiceId}`, payload)
+          .then((res) => {
+            if (this.props.userDetails.isAdmin === false) {
+              if (this.props.userDetails.isCustomer === true) {
+                this.getInvoiceList();
+              } else {
+                this.getOrderList();
+              }
+            } else {
+              this.getAdminAllInvoiceList();
+            }
+          })
+          .catch((err) => {
+            console.log("Error: ", err);
+            this.setState({
+              isLoading: false,
+            });
+          });
+      }
+    );
+  };
+
   componentDidMount() {
     console.log(".......Order Table Component Mounted:", this.props);
     if (this.props.userDetails.isCustomer === true) {
@@ -79,7 +136,8 @@ class OrderTable extends Component {
           <div className="header-item">Item Name</div>
           <div className="header-item">Total Price</div>
           <div className="header-item">Status</div>
-          <div className="header-item">Last Update</div>
+          {/* <div className="header-item">Last Update</div> */}
+          <div className="header-item">Order Date</div>
           <div className="header-item">Exp. Delivery</div>
           <div className="header-item action-section">Action</div>
         </div>
@@ -113,10 +171,13 @@ class OrderTable extends Component {
                       {getInvoiceState(invoice.invoiceState)}
                     </div>
                   </div>
-                  <div className="body-item">
+                  {/* <div className="body-item">
                     {invoice.lastModifyDate
                       ? readableDateFormat(new Date(invoice.lastModifyDate))
                       : ""}
+                  </div> */}
+                  <div className="body-item">
+                    {invoice.createdDate ? readableDateFormat(new Date(invoice.createdDate)) : ""}
                   </div>
                   <div className="body-item">
                     {invoice.deliveryDate ? readableDateFormat(new Date(invoice.deliveryDate)) : ""}
@@ -130,7 +191,14 @@ class OrderTable extends Component {
 
                         <Dropdown.Menu>
                           {invoice.isInvoiceSettle === false && (
-                            <Dropdown.Item href="#">Cancel</Dropdown.Item>
+                            <Dropdown.Item
+                              href="#"
+                              onClick={() =>
+                                this.handleInvoiceStateUpdate(invoice.id, "ORDER_CANCELLED_REQUEST")
+                              }
+                            >
+                              Cancel
+                            </Dropdown.Item>
                           )}
                           {invoice.isInvoiceSettle === true && (
                             <Dropdown.Item href="#">Return</Dropdown.Item>

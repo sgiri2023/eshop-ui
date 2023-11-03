@@ -2,6 +2,7 @@ import { Component } from "react";
 import axios from "./../../../../axiosClient/eaxios";
 import { Table, Button, Image, Modal } from "react-bootstrap";
 import ProductBrandForm from "./ProductBrandForm";
+import { formatDate } from "../../../../constant/Utils";
 class ProductBrand extends Component {
   constructor() {
     super();
@@ -167,7 +168,7 @@ class ProductBrand extends Component {
                       <td>{data.subCategoryName}</td>
                       <td>{data.brnadName}</td>
                       <td>{data.manufacturerDetails}</td>
-                      <td>{data.createdDate}</td>
+                      <td>{data.createdDate && formatDate(new Date(data.createdDate))}</td>
                       <td>{data.isArchive === true ? "Inactive" : "Active"}</td>
                     </tr>
                   ))

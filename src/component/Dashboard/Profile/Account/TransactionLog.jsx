@@ -21,7 +21,7 @@ class TransactionLog extends Component {
               <th>Type</th>
               <th>Amount</th>
               <th>Status</th>
-              <th>description</th>
+              {/* <th>description</th> */}
             </tr>
           </thead>
           <tbody>
@@ -33,7 +33,10 @@ class TransactionLog extends Component {
                     transaction.transactionType.includes("DEBIT") ? "debit-cell" : "credit-cell"
                   }`}
                 >
-                  <td>{transaction.referenceNo}</td>
+                  <td>
+                    <div>{transaction.referenceNo}</div>
+                    <div>Ref: {transaction.description}</div>
+                  </td>
                   <td>{transaction.fromAccountName}</td>
                   <td>{transaction.toAccountName}</td>
                   <td>{transaction.processingDate}</td>
@@ -61,7 +64,7 @@ class TransactionLog extends Component {
                       ? "Completed"
                       : transaction.transactionStatus}
                   </td>
-                  <td>{transaction.description}</td>
+                  {/* <td>{transaction.description}</td> */}
                 </tr>
               ))
             ) : (

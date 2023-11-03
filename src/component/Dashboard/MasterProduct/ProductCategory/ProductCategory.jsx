@@ -2,6 +2,7 @@ import { Component } from "react";
 import axios from "./../../../../axiosClient/eaxios";
 import { Table, Button, Image, Modal } from "react-bootstrap";
 import ProductCategoryForm from "./ProductCategoryForm";
+import { formatDate } from "../../../../constant/Utils";
 
 class ProductCategory extends Component {
   constructor() {
@@ -94,7 +95,7 @@ class ProductCategory extends Component {
                 ? record.map((data, index) => (
                     <tr key={index}>
                       <td>{data.displayName}</td>
-                      <td>{data.createdDate}</td>
+                      <td>{data.createdDate && formatDate(new Date(data.createdDate))}</td>
                       <td>{data.isArchive === true ? "Inactive" : "Active"}</td>
                     </tr>
                   ))

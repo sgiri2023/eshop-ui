@@ -151,6 +151,38 @@ class AdminOrderTable extends Component {
     );
   };
 
+  handleRefundInvoicePaymentToBuyer = (invoiceId, invoiceState) => {
+    let payload = {
+      invoiceState: invoiceState,
+    };
+    this.setState(
+      {
+        isLoading: true,
+      },
+      () => {
+        axios
+          .put(`/api/invoice/refund/${invoiceId}`, payload)
+          .then((res) => {
+            if (this.props.userDetails.isAdmin === false) {
+              if (this.props.userDetails.isCustomer === true) {
+                this.getInvoiceList();
+              } else {
+                this.getOrderList();
+              }
+            } else {
+              this.getAdminAllInvoiceList();
+            }
+          })
+          .catch((err) => {
+            console.log("Error: ", err);
+            this.setState({
+              isLoading: false,
+            });
+          });
+      }
+    );
+  };
+
   componentDidMount() {
     console.log(".......Order Table Component Mounted:", this.props);
     if (this.props.userDetails.isAdmin === false) {
@@ -234,6 +266,19 @@ class AdminOrderTable extends Component {
                               }
                             >
                               Sent to Seller
+                            </Dropdown.Item>
+                          )}
+                          {invoice.invoiceState === "ORDER_CANCELLED_REQUEST" && (
+                            <Dropdown.Item
+                              href="#"
+                              onClick={() =>
+                                this.handleRefundInvoicePaymentToBuyer(
+                                  invoice.id,
+                                  "ORDER_CANCELLED"
+                                )
+                              }
+                            >
+                              Process Refund
                             </Dropdown.Item>
                           )}
                           {invoice.invoiceState === "ORDER_SHIPPED" && (

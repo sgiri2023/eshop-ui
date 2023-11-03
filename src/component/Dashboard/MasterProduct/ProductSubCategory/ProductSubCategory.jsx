@@ -2,6 +2,7 @@ import { Component } from "react";
 import axios from "./../../../../axiosClient/eaxios";
 import ProductSubCategoryForm from "./ProductSubCategoryForm";
 import { Table, Button, Image, Modal } from "react-bootstrap";
+import { formatDate } from "../../../../constant/Utils";
 
 class ProductSubCategory extends Component {
   constructor() {
@@ -132,7 +133,7 @@ class ProductSubCategory extends Component {
                     <tr key={index}>
                       <td>{data.categoryName}</td>
                       <td>{data.displayName}</td>
-                      <td>{data.createdDate}</td>
+                      <td>{data.createdDate && formatDate(new Date(data.createdDate))}</td>
                       <td>{data.isArchive === true ? "Inactive" : "Active"}</td>
                     </tr>
                   ))

@@ -3,6 +3,7 @@ import axios from "./../../../../axiosClient/eaxios";
 import { Table, Button, Image, Modal } from "react-bootstrap";
 import NumberFormat from "react-number-format";
 import ProductModelForm from "./ProductModelForm";
+import { formatDate } from "../../../../constant/Utils";
 
 class ProductModel extends Component {
   constructor() {
@@ -225,7 +226,7 @@ class ProductModel extends Component {
                       <td>
                         <Image src={data.productImageUrl} height="40" />
                       </td>
-                      <td>{data.createdDate}</td>
+                      <td>{data.createdDate && formatDate(new Date(data.createdDate))}</td>
                       <td>{data.isArchive === true ? "Inactive" : "Active"}</td>
                     </tr>
                   ))

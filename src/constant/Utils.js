@@ -9,7 +9,8 @@ export const formatDate = (date, showTime = false, separator = "-") => {
     let day = date.getDate();
     day = day < 10 ? "0" + day : day;
 
-    let formatedDate = year + separator + month + separator + day;
+    // let formatedDate = year + separator + month + separator + day;
+    let formatedDate = day + separator + month + separator + year;
     if (showTime) {
       formatedDate += date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     }
@@ -70,6 +71,10 @@ export const getInvoiceState = (invoiceState) => {
     return "Delivered";
   } else if (invoiceState === "ORDER_SETTLED") {
     return "Completed";
+  } else if (invoiceState === "ORDER_CANCELLED_REQUEST") {
+    return "Cancel Request";
+  } else if (invoiceState === "ORDER_CANCELLED") {
+    return "Cancelled";
   } else {
     return invoiceState;
   }
