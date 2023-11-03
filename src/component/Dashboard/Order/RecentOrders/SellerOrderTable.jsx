@@ -5,7 +5,8 @@ import axios from "./../../../../axiosClient/eaxios";
 import { formatDate, getInvoiceState, readableDateFormat } from "../../../../constant/Utils";
 import Dropdown from "react-bootstrap/Dropdown";
 import { CiMenuKebab } from "react-icons/ci";
-class OrderTable extends Component {
+
+class SellerOrderTable extends Component {
   constructor() {
     super();
     this.state = { data: "", invoiceList: [], activeKey: "orderSummary" };
@@ -60,6 +61,63 @@ class OrderTable extends Component {
     );
   };
 
+  getAdminAllInvoiceList = () => {
+    this.setState(
+      {
+        isLoading: true,
+      },
+      () => {
+        axios
+          .get(`/api/invoice/admin/get-invoice-list`)
+          .then((res) => {
+            console.log(".......Invoice List: ", res.data);
+            this.setState({
+              invoiceList: res.data,
+              isLoading: false,
+            });
+          })
+          .catch((err) => {
+            console.log("Error: ", err);
+            this.setState({
+              isLoading: false,
+            });
+          });
+      }
+    );
+  };
+
+  handleInvoiceStateUpdate = (invoiceId, invoiceState) => {
+    let payload = {
+      invoiceState: invoiceState,
+    };
+    this.setState(
+      {
+        isLoading: true,
+      },
+      () => {
+        axios
+          .put(`/api/invoice/update-state/${invoiceId}`, payload)
+          .then((res) => {
+            if (this.props.userDetails.isAdmin === false) {
+              if (this.props.userDetails.isCustomer === true) {
+                this.getInvoiceList();
+              } else {
+                this.getOrderList();
+              }
+            } else {
+              this.getAdminAllInvoiceList();
+            }
+          })
+          .catch((err) => {
+            console.log("Error: ", err);
+            this.setState({
+              isLoading: false,
+            });
+          });
+      }
+    );
+  };
+
   componentDidMount() {
     console.log(".......Order Table Component Mounted:", this.props);
     if (this.props.userDetails.isCustomer === true) {
@@ -75,7 +133,7 @@ class OrderTable extends Component {
       <div className="order-table-container ">
         <div className="cus-table-header">
           <div className="header-item">Order Id</div>
-          <div className="header-item">Seller</div>
+          <div className="header-item">Buyer</div>
           <div className="header-item">Item Name</div>
           <div className="header-item">Total Price</div>
           <div className="header-item">Status</div>
@@ -88,7 +146,7 @@ class OrderTable extends Component {
             ? invoiceList.map((invoice) => (
                 <div className="cus-table-row">
                   <div className="body-item break-line">{invoice.orderId}</div>
-                  <div className="body-item">{invoice.productResponse.sellerName}</div>
+                  <div className="body-item">{invoice.buyerName}</div>
                   <div className="body-item model-section">
                     <img src={invoice.productResponse.productImageUrl} className="model-image" />{" "}
                     <span>{invoice.productResponse.modelName}</span>
@@ -129,11 +187,18 @@ class OrderTable extends Component {
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu>
-                          {invoice.isInvoiceSettle === false && (
-                            <Dropdown.Item href="#">Cancel</Dropdown.Item>
+                          {invoice.invoiceState === "ORDER_PROCESSING" && (
+                            <Dropdown.Item
+                              href="#"
+                              onClick={() =>
+                                this.handleInvoiceStateUpdate(invoice.id, "ORDER_SHIPPED")
+                              }
+                            >
+                              Ship
+                            </Dropdown.Item>
                           )}
-                          {invoice.isInvoiceSettle === true && (
-                            <Dropdown.Item href="#">Return</Dropdown.Item>
+                          {invoice.invoiceState === "ORDER_DELIVERED" && (
+                            <Dropdown.Item href="#">Claim</Dropdown.Item>
                           )}
                         </Dropdown.Menu>
                       </Dropdown>
@@ -155,4 +220,4 @@ const mapStateToPros = (state) => {
   };
 };
 
-export default connect(mapStateToPros)(OrderTable);
+export default connect(mapStateToPros)(SellerOrderTable);

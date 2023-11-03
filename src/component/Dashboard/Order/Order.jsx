@@ -9,7 +9,7 @@ import Tabs from "react-bootstrap/Tabs";
 class Order extends Component {
   constructor() {
     super();
-    this.state = { data: "", invoiceList: [], activeKey: "orderSummary" };
+    this.state = { data: "", invoiceList: [], activeKey: "recentOrders" };
   }
   getInvoiceList = () => {
     this.setState(
@@ -74,14 +74,6 @@ class Order extends Component {
     const { invoiceList, activeKey } = this.state;
     return (
       <div className="order-card-container">
-        {/* {invoiceList.length > 0
-          ? invoiceList.map((invoice, index) => (
-              <div key={index}>
-                <OrderCard order={invoice} />
-              </div>
-            ))
-          : "No Oders Found"} */}
-
         <Tabs
           activeKey={activeKey}
           onSelect={(k) => {
