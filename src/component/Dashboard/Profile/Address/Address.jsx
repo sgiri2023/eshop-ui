@@ -39,8 +39,8 @@ class Address extends Component {
   render() {
     const { addressList } = this.state;
     return (
-      <div>
-        <div className="tab-title">Manage Addresses</div>
+      <div className="boxshadow_template_one">
+        {/* <div className="tab-title">Manage Addresses</div> */}
 
         <div className="addess-add-container">
           <AiOutlinePlus className="icon" /> <div className="title">ADD A NEW ADDRESS</div>

@@ -2,11 +2,14 @@ import { Component } from "react";
 import axios from "./../../../axiosClient/eaxios";
 import { connect } from "react-redux";
 import OrderCard from "./OrderCard/OrderCard";
-
+import RecetnOrder from "./RecentOrders/RecentOrders";
+import OrderSummary from "./OrderSummary/OrderSummary";
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
 class Order extends Component {
   constructor() {
     super();
-    this.state = { data: "", invoiceList: [] };
+    this.state = { data: "", invoiceList: [], activeKey: "recentOrders" };
   }
   getInvoiceList = () => {
     this.setState(
@@ -68,16 +71,26 @@ class Order extends Component {
   }
 
   render() {
-    const { invoiceList } = this.state;
+    const { invoiceList, activeKey } = this.state;
     return (
       <div className="order-card-container">
-        {invoiceList.length > 0
-          ? invoiceList.map((invoice, index) => (
-              <div key={index}>
-                <OrderCard order={invoice} />
-              </div>
-            ))
-          : "No Oders Found"}
+        <Tabs
+          activeKey={activeKey}
+          onSelect={(k) => {
+            this.setState({
+              activeKey: k,
+            });
+          }}
+          className="mb-3 horizoontal-tab"
+          style={{ marginBottom: "0px !important" }}
+        >
+          <Tab eventKey="orderSummary" title="Order Summary">
+            <OrderSummary />
+          </Tab>
+          <Tab eventKey="recentOrders" title="Recent Orders">
+            <RecetnOrder />
+          </Tab>
+        </Tabs>
       </div>
     );
   }

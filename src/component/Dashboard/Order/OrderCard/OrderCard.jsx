@@ -14,11 +14,11 @@ class OrderCard extends Component {
     return (
       <div className="order-card boxshadow_template_one">
         <div className="product-image">
-          <img src={order.productResponse.pictureUrl} />
+          <img src={order.productResponse.productImageUrl} />
         </div>
         <div className="product-description">
-          <div className="product-name">{order.productResponse.name}</div>
-          <div className="product-description">{order.productResponse.description}</div>
+          <div className="product-name">{order.productResponse.modelName}</div>
+          <div className="product-description">{order.productResponse.variant}</div>
           <div className="product-description">Quantity: {order.quantity}</div>
         </div>
         <div className="amount-section">

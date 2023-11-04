@@ -53,17 +53,17 @@ class CartItemCard extends Component {
     return (
       <div className="cart-item-container">
         <div className="product-image">
-          <img src={cartItemDetails.pictureUrl} />
+          <img src={cartItemDetails.productImageUrl} />
         </div>
         <div className="product-description">
-          <div className="product-name">{cartItemDetails.name}</div>
-          <div className="product-description">{cartItemDetails.description}</div>
+          <div className="product-name">{cartItemDetails.modelName}</div>
+          <div className="product-description">{cartItemDetails.variant}</div>
           <div className="seller-info">Seller: {cartItemDetails.sellerName}</div>
           <div className="price">
             {cartItemDetails.discountRate > 0 && (
               <span className="actual-price">
                 <NumberFormat
-                  value={cartItemDetails.actualPrice * cartItemDetails.purchaseQuantity}
+                  value={cartItemDetails.marketRatePrice * cartItemDetails.purchaseQuantity}
                   displayType={"text"}
                   thousandSeparator={true}
                   prefix={"₹"}
@@ -76,7 +76,7 @@ class CartItemCard extends Component {
             )}{" "}
             <span className="discounted-price">
               <NumberFormat
-                value={cartItemDetails.discountedPrice * cartItemDetails.purchaseQuantity}
+                value={cartItemDetails.priceAfterDiscount * cartItemDetails.purchaseQuantity}
                 displayType={"text"}
                 thousandSeparator={true}
                 prefix={"₹"}

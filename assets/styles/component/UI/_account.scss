@@ -1,4 +1,10 @@
 .account-container{
+    position: relative;
+    .recharge-button{
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
     .bank-card-container{
         // border: 1px solid red;
         min-height: 150px;

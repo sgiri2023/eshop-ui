@@ -1,17 +1,21 @@
 import { Component } from "react";
-import ProductCard from "./ProductCard/ProductCard";
-import axios from "./../../../axiosClient/eaxios";
-import { connect } from "react-redux";
+import axios from "./../../../../axiosClient/eaxios";
 import { Table, Button, Image, Modal } from "react-bootstrap";
-import ProductFrom from "./ProductForm";
-import { FiRefreshCcw } from "react-icons/fi";
-// FiRefreshCcw
-class Product extends Component {
+import NumberFormat from "react-number-format";
+import ProductModelForm from "./ProductModelForm";
+import { formatDate } from "../../../../constant/Utils";
+
+class ProductModel extends Component {
   constructor() {
     super();
     this.state = {
       data: "",
-      productList: [],
+      record: [],
+      isLoading: false,
+      errorMessage: "",
+      isAddModalOpen: false,
+      modalMode: "",
+      modalTitle: "",
       initialValues: "",
 
       productCategoryList: [],
@@ -20,34 +24,73 @@ class Product extends Component {
       isProductSubCategoryListLoading: false,
       productBrandList: [],
       isProductBrandListLoading: false,
-      productModelList: [],
-      isProductModelListLoading: false,
-      isAddProductModelOpen: false,
+      populateSubCategoryList: [],
+      populateBrandList: [],
     };
   }
-  getProductList = () => {
+
+  getAllProductModel = () => {
     this.setState(
       {
         isLoading: true,
       },
       () => {
         axios
-          .get(`/api/product/get-product-list`)
+          .get(`/api/master-product/model/list`)
           .then((res) => {
-            console.log(".......Product List: ", res.data);
             this.setState({
-              productList: res.data,
+              record: res.data,
               isLoading: false,
             });
           })
           .catch((err) => {
-            console.log("Error: ", err);
             this.setState({
               isLoading: false,
             });
           });
       }
     );
+  };
+
+  handleAddModel = () => {
+    let initialValues = {
+      modelName: "",
+      modelVariant: "",
+      categoryId: "",
+      categoryDetails: "",
+      subCategoryId: "",
+      subCategoryDetails: "",
+      brandId: "",
+      brandDetails: "",
+      mrp: "",
+      productImageUrl: "",
+      description: "",
+      warranty: "",
+    };
+    this.setState(
+      {
+        modalMode: "ADD",
+        modalTitle: "Add Product Model",
+        initialValues,
+      },
+      () => {
+        this.handleOpenAddModelModal();
+      }
+    );
+  };
+
+  handleOpenAddModelModal = () => {
+    this.setState({
+      isAddModalOpen: true,
+    });
+  };
+
+  handleCloseAddModelModal = () => {
+    this.setState({
+      isAddModalOpen: false,
+      modalMode: "",
+      modalTitle: "",
+    });
   };
 
   getAllProductCategory = () => {
@@ -119,91 +162,17 @@ class Product extends Component {
     );
   };
 
-  getAllProductModel = () => {
-    this.setState(
-      {
-        isProductModelListLoading: true,
-      },
-      () => {
-        axios
-          .get(`/api/master-product/model/list`)
-          .then((res) => {
-            this.setState({
-              productModelList: res.data,
-              isProductModelListLoading: false,
-            });
-          })
-          .catch((err) => {
-            this.setState({
-              isProductModelListLoading: false,
-            });
-          });
-      }
-    );
-  };
-
-  handleAddProductModal = () => {
-    let initialValues = {
-      modelName: "",
-      modelVariant: "",
-      categoryId: "",
-      categoryDetails: "",
-      subCategoryId: "",
-      subCategoryDetails: "",
-      brandId: "",
-      brandDetails: "",
-      modelId: "",
-      modelDetails: "",
-      mrp: "",
-      productImageUrl: "",
-      description: "",
-      warranty: "",
-      discountRate: 0,
-      discountedPrice: 0,
-      shippingCharge: 0,
-      deliveryDays: 0,
-      stockCount: 0,
-      masterProductModelId: 0,
-    };
-    this.setState(
-      {
-        modalMode: "ADD",
-        modalTitle: "Add Product ",
-        initialValues,
-      },
-      () => {
-        this.openAddProductModal();
-      }
-    );
-  };
-
-  openAddProductModal = () => {
-    this.setState({
-      isAddProductModelOpen: true,
-    });
-  };
-
-  closeAddProductModal = () => {
-    this.setState({
-      isAddProductModelOpen: false,
-    });
-  };
-
-  handleRefresh = () => {
-    this.getProductList();
-  };
-
   componentDidMount() {
-    this.getProductList();
-
     this.getAllProductCategory();
     this.getAllProductSubCategory();
     this.getAllProductBrand();
     this.getAllProductModel();
   }
+
   render() {
     const {
-      productList,
+      record,
+      isAddModalOpen,
       modalMode,
       modalTitle,
       initialValues,
@@ -213,32 +182,62 @@ class Product extends Component {
       isProductSubCategoryListLoading,
       productBrandList,
       isProductBrandListLoading,
-      productModelList,
-      isProductModelListLoading,
-      isAddProductModelOpen,
     } = this.state;
-    const { userDetails } = this.props;
 
     return (
-      <div>
-        {userDetails.isCustomer === false && (
-          <Button onClick={() => this.handleAddProductModal()}>Add Product</Button>
-        )}
-        <div className="refresh-icon">
-          <FiRefreshCcw onClick={() => this.handleRefresh()} />
-        </div>
-        <div className="product-list-container">
-          {productList.length > 0 &&
-            productList.map((product, index) => (
-              <div className="product-container" key={index}>
-                <ProductCard key={index} product={product} />
-              </div>
-            ))}
+      <div className="boxshadow_template_one master-product-inner-container">
+        <Button onClick={() => this.handleAddModel()}>Add Model</Button>
+        <div className="">
+          <Table responsive="sm">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Sub-Category</th>
+                <th>Brand Name</th>
+                <th>Model Name</th>
+                <th>Variant</th>
+                <th>M.R.P</th>
+                <th>Image</th>
+                <th>Created Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {record.length > 0
+                ? record.map((data, index) => (
+                    <tr key={index}>
+                      <td>{data.categoryName}</td>
+                      <td>{data.subCategoryName}</td>
+                      <td>{data.brandName}</td>
+                      <td>{data.modelName}</td>
+                      <td>{data.variant}</td>
+                      <td>
+                        <NumberFormat
+                          value={data.marketRatePrice}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          prefix={"₹"}
+                          decimalScale={2}
+                          fixedDecimalScale={true}
+                          thousandsGroupStyle={"thousand"}
+                          renderText={(value) => <span> {value}</span>}
+                        />
+                      </td>
+                      <td>
+                        <Image src={data.productImageUrl} height="40" />
+                      </td>
+                      <td>{data.createdDate && formatDate(new Date(data.createdDate))}</td>
+                      <td>{data.isArchive === true ? "Inactive" : "Active"}</td>
+                    </tr>
+                  ))
+                : "No Records Found"}
+            </tbody>
+          </Table>
         </div>
 
         <Modal
-          show={isAddProductModelOpen}
-          onHide={this.closeAddProductModal}
+          show={isAddModalOpen}
+          onHide={this.handleCloseAddModelModal}
           backdrop="static"
           keyboard={false}
         >
@@ -246,19 +245,17 @@ class Product extends Component {
             <Modal.Title>{modalTitle}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <ProductFrom
+            <ProductModelForm
               mode={modalMode}
               initialValues={initialValues}
-              onCancelModal={this.closeAddProductModal}
-              reloadList={this.getProductList}
+              onCancelModal={this.handleCloseAddModelModal}
+              reloadList={this.getAllProductModel}
               productCategoryList={productCategoryList}
               isProductCategoryListLoading={isProductCategoryListLoading}
               productSubCategoryList={productSubCategoryList}
               isProductSubCategoryListLoading={isProductSubCategoryListLoading}
               productBrandList={productBrandList}
               isProductBrandListLoading={isProductBrandListLoading}
-              productModelList={productModelList}
-              isProductModelListLoading={isProductModelListLoading}
             />
           </Modal.Body>
         </Modal>
@@ -267,11 +264,4 @@ class Product extends Component {
   }
 }
 
-const mapStateToPros = (state) => {
-  console.log("Store from navbar: ", state);
-  return {
-    userDetails: state.userDetails.userDetails,
-  };
-};
-
-export default connect(mapStateToPros)(Product);
+export default ProductModel;

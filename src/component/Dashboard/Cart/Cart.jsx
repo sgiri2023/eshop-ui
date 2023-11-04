@@ -15,7 +15,7 @@ class Cart extends Component {
     const { cartDetails } = this.props;
     let totalPrice = 0;
     cartDetails.map((cartItem) => {
-      totalPrice = totalPrice + cartItem.actualPrice * cartItem.purchaseQuantity;
+      totalPrice = totalPrice + cartItem.marketRatePrice * cartItem.purchaseQuantity;
     });
     return totalPrice;
   };
@@ -25,7 +25,8 @@ class Cart extends Component {
     let totalPrice = 0;
     cartDetails.map((cartItem) => {
       totalPrice =
-        totalPrice + (cartItem.actualPrice - cartItem.discountedPrice) * cartItem.purchaseQuantity;
+        totalPrice +
+        (cartItem.marketRatePrice - cartItem.priceAfterDiscount) * cartItem.purchaseQuantity;
     });
     return totalPrice;
   };
@@ -34,7 +35,7 @@ class Cart extends Component {
     const { cartDetails } = this.props;
     let totalPrice = 0;
     cartDetails.map((cartItem) => {
-      totalPrice = totalPrice + cartItem.discountedPrice * cartItem.purchaseQuantity;
+      totalPrice = totalPrice + cartItem.priceAfterDiscount * cartItem.purchaseQuantity;
     });
     return totalPrice;
   };
@@ -45,7 +46,7 @@ class Cart extends Component {
 
     cartDetails.map((product) => {
       let invoiceRequest = {
-        unitPrice: product.actualPrice,
+        unitPrice: product.marketRatePrice,
         discountRate: product.discountRate,
         quantity: product.purchaseQuantity,
         taxRate: 0,

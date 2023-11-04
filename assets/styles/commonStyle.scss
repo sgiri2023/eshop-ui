@@ -3,3 +3,44 @@
     border-radius: 2px;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
 }
+
+.panel-content{
+    .horizoontal-tab{
+        margin-bottom: 0px !important;
+    }
+}
+
+.refresh-icon{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    color: black;
+    gap: 10px;
+    &:hover{
+        color: #095AD2;
+    }
+    
+}
+
+.mr-lr-10{
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.mr-tb-20{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.mr-t-20-imp{
+    margin-top: 20px !important;
+}
+
+.break-line{
+    word-break: break-all;
+}

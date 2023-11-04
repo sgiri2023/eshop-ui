@@ -61,7 +61,7 @@ class SidebarComponent extends Component {
                     <MdProductionQuantityLimits className="sidebar-menu-icon" />
                   ) : link.name.toLowerCase() === "report" ? (
                     <TbReportAnalytics className="sidebar-menu-icon" />
-                  ) : link.name.toLowerCase() === "order" ? (
+                  ) : link.name.toLowerCase() === "my orders" ? (
                     <HiOutlineShoppingCart className="sidebar-menu-icon" />
                   ) : (
                     <GoHome className="sidebar-menu-icon" />

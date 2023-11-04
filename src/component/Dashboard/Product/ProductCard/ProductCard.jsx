@@ -25,13 +25,42 @@ class ProductCard extends Component {
     let modifyProduct = { ...product };
     modifyProduct.purchaseQuantity = purchaseQuantity;
     let currentCartDetails = [...this.props.cartDetails];
-    currentCartDetails.push(modifyProduct);
-    this.props.updateCart(currentCartDetails);
+    let tempFinalCartList = [];
+
+    let isDuplicateProductFoud = false;
+
+    currentCartDetails.map((cart) => {
+      let tempCartDetails = { ...cart };
+      if (Number(tempCartDetails.id) === Number(product.id)) {
+        isDuplicateProductFoud = true;
+        tempCartDetails.purchaseQuantity = tempCartDetails.purchaseQuantity + 1;
+      }
+      tempFinalCartList.push(tempCartDetails);
+    });
+
+    if (isDuplicateProductFoud === false) {
+      tempFinalCartList.push(modifyProduct);
+    }
+
+    this.props.updateCart(tempFinalCartList);
+  };
+
+  handleCheckForAddedProductCount = () => {
+    const { product, cartDetails } = this.props;
+    console.log(".......Checking for Added Product: ", product, cartDetails);
+    let quantity = 0;
+    cartDetails.map((cartItem) => {
+      if (Number(cartItem.id) === Number(product.id)) {
+        quantity = cartItem.purchaseQuantity;
+      }
+    });
+
+    return quantity;
   };
 
   render() {
     const { heart, addbag } = this.state;
-    const { product, key } = this.props;
+    const { product, key, userDetails, cartDetails } = this.props;
     return (
       <div className="product-card-container">
         <div className="container" key={key}>
@@ -48,10 +77,10 @@ class ProductCard extends Component {
               </small>
             </div>
             <div className="image">
-              <img src={product.pictureUrl} />
+              <img src={product.productImageUrl} />
             </div>
-            <div className="vitamin">
-              <h3>{product.name}</h3>
+            <div className="model-name-rating">
+              <p className="model-name">{product.modelName}</p>
               <div className="rating" key={key}>
                 <input
                   type="radio"
@@ -100,37 +129,56 @@ class ProductCard extends Component {
                 <label htmlFor={`${product.id}-1`}>☆</label>
               </div>
             </div>
-            <div className="reviews">
-              <p>{product.description}</p>
+            <div className="variant">
+              <p>{product.variant}</p>
               {/* <u>144 Views</u> */}
             </div>
             <div className="seller-info">Seller: {product.sellerName}</div>
-            <div className="last_buttons">
-              <div className="qty_btn">
-                {/* <i className="fa fa-minus"></i>
-                <p>{addbag}</p>
-                <i className="fa fa-plus"></i> */}
-              </div>
-              <div className="money_bag">
-                <p>
-                  <strong>
-                    <NumberFormat
-                      value={product.discountedPrice}
-                      displayType={"text"}
-                      thousandSeparator={true}
-                      prefix={"₹"}
-                      decimalScale={2}
-                      fixedDecimalScale={true}
-                      thousandsGroupStyle={"thousand"}
-                      renderText={(value) => <span> {value}</span>}
-                    />
-                  </strong>
-                </p>
-
+            <div className="price-section">
+              {product.discountRate > 0 && (
+                <span className="actual-price">
+                  <NumberFormat
+                    value={product.marketRatePrice}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={"₹"}
+                    decimalScale={2}
+                    fixedDecimalScale={true}
+                    thousandsGroupStyle={"thousand"}
+                    renderText={(value) => <span> {value}</span>}
+                  />{" "}
+                </span>
+              )}
+              <span className="discounted-price">
+                <NumberFormat
+                  value={product.priceAfterDiscount}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"₹"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
+                  thousandsGroupStyle={"thousand"}
+                  renderText={(value) => <span> {value}</span>}
+                />
+              </span>{" "}
+              {product.discountRate > 0 && (
+                <span className="discount-rate">
+                  {product.discountRate}
+                  {"%"} off
+                </span>
+              )}
+            </div>
+            <div className="add-to-cart">
+              {userDetails.isCustomer === true && (
                 <button onClick={() => this.handleAddToCart(product)}>
-                  <i className="fa fa-shopping-bag"></i>Add to bag
+                  Add to Cart{" "}
+                  {cartDetails.length > 0 && this.handleCheckForAddedProductCount() > 0 && (
+                    <span className="added-to-cart-count">
+                      {this.handleCheckForAddedProductCount()}
+                    </span>
+                  )}
                 </button>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -142,6 +190,7 @@ class ProductCard extends Component {
 const mapStateToPros = (state) => {
   return {
     cartDetails: state.cartDetails.cartDetails,
+    userDetails: state.userDetails.userDetails,
   };
 };
 

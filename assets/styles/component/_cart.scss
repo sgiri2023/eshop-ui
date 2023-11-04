@@ -124,6 +124,9 @@
             .product-name{
                 font-weight: 600;
                 font-size: 20px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             .product-description{
                 font-weight: 400;
@@ -131,6 +134,9 @@
                 color: #878787;
                 font-size: 14px;
                 height: 20px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             .seller-info{
                 display: block;

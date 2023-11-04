@@ -1,0 +1,135 @@
+.order-card-container{
+
+    .recent-order-container{
+
+        padding: 20px 0px;
+        .order-table-container{
+            .cus-table-header{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                border-radius: 10px 10px 0px 0px;
+                box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+                background-color: #FFFFFF;
+                font-size: 16px;
+                margin-bottom: 2px;
+                .header-item{
+                    padding: 10px 20px;
+                    color: #B1BFC4;
+                    font-weight: 600;
+                    width: 13%;
+                    // white-space: nowrap;
+                    // overflow: hidden;
+                    // text-overflow: ellipsis;
+                }
+                .action-section{
+                    width: 87px;
+                }
+            }
+            .cus-table-body{
+                box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+                background-color: #FFFFFF;
+                display: flex;
+                flex-direction: column;
+                .cus-table-row{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                    font-size: 12px;
+                    border-bottom: 1px solid #dadada;
+                    .body-item{
+                        padding: 10px 20px;
+                        color: #446370;
+                        font-weight: 600;
+                        width: 13%; 
+                        // white-space: nowrap;
+                        // overflow: hidden;
+                        // text-overflow: ellipsis;
+                    }
+                    .model-section{
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        gap: 5px;
+                        .model-image{
+                            height: 30px;
+                            width: 30px;
+                            border-radius: 50%;
+                            // border: 1px solid red;
+                        }
+                    }
+                    .final-price-section{
+
+                        .quantity-section{
+                            font-weight: 500;
+                        }
+                    }
+                    .invoice-state{
+                        width: fit-content;
+                        padding: 5px 10px;
+                        border-radius: 30px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: 700; 
+                        
+                    }
+                    .ORDER_PLACED{
+                        background-color: #42B9EC;
+                        color: white;
+                    }
+                    .ORDER_PROCESSING{
+                        background-color: #f28123;
+                        color: white;
+                    }
+                    .ORDER_SHIPPED{
+                        background-color: #ffc107;
+                        color: white;
+                    }
+                    .ORDER_REACHED_NEAREST_HUB{
+                        background-color: #9a3fdd;
+                        color: white; 
+                    }
+                    .ORDER_OUT_FOR_DELIVERY{
+                        background-color: #016638;
+                        color: white; 
+                    }
+                    .ORDER_DELIVERED{
+                        background-color: #03bf69;
+                        color: white; 
+                    }
+                    .ORDER_SETTLED{
+                        background-color: #03bf69;
+                        color: white; 
+                    }
+                    .ORDER_CANCELLED_REQUEST{
+                        background-color: #bc0c1d;
+                        color: white; 
+                    }
+                    .ORDER_CANCELLED{
+                        background-color: #bc0c1d;
+                        color: white; 
+                    }
+
+
+                    .action-section{
+                        width: 87px;
+
+                        .dropdown-toggle {
+                            background-color: transparent !important;
+                            border: transparent !important;
+                            color: #6c757d;
+                            font-size: 20px;
+                            &::after{
+                                display: none !important;
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+}

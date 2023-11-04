@@ -30,7 +30,7 @@ export const ROUTE_LINK = [
   },
   {
     id: 2,
-    name: "Order",
+    name: "My Orders",
     link: "/dashboard/order",
     subLink: [
       // {
@@ -40,6 +40,13 @@ export const ROUTE_LINK = [
       // },
     ],
   },
+  {
+    id: 6,
+    name: "Master Products",
+    link: "/dashboard/master-products",
+    subLink: [],
+  },
+
   {
     id: 3,
     name: "Report",
