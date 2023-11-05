@@ -156,7 +156,7 @@ class OrderSummary extends Component {
             xAxis={[{ scaleType: "point", data: xAxis }]}
           />
         </div>
-        <h2>Seller Projection</h2>
+        {userDetails.isAdmin === true && <h2>Seller Projection</h2>}
         {userDetails.isAdmin === true && (
           <div className="d-flex">
             <LineChart
@@ -173,7 +173,7 @@ class OrderSummary extends Component {
             />
           </div>
         )}
-        <h2>Buyer Projection</h2>
+        {userDetails.isAdmin === true && <h2>Buyer Projection</h2>}
         {userDetails.isAdmin === true && (
           <div className="d-flex">
             <LineChart
