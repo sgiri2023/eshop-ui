@@ -23,6 +23,15 @@ class OrderSummary extends Component {
       buyerProjectionOrderDataSet: [],
       buyerProjectionPriceDataSet: [],
       buyerProjectionXaxis: [],
+
+      productQuantityProjectionDataSet: [],
+      productProjectionAaxis: [],
+      histogramProduct: {
+        modelName: [],
+        quantity: [],
+      },
+      histogramProductModel: ["Jan", "Feb", "March"],
+      histogramProductQuantity: [0, 0, 0],
     };
   }
 
@@ -68,8 +77,8 @@ class OrderSummary extends Component {
           sellerProjectionPriceDataSet: tempPriceData,
         },
         () => {
-          console.log("Asis: ", this.state.sellerProjectionXaxis);
-          console.log("Data: ", this.state.sellerProjectionOrderDataSet);
+          // console.log("Asis: ", this.state.sellerProjectionXaxis);
+          // console.log("Data: ", this.state.sellerProjectionOrderDataSet);
         }
       );
     });
@@ -99,8 +108,51 @@ class OrderSummary extends Component {
           buyerProjectionPriceDataSet: tempPriceData,
         },
         () => {
-          console.log("Asis: ", this.state.buyerProjectionXaxis);
-          console.log("Data: ", this.state.buyerProjectionOrderDataSet);
+          // console.log("Asis: ", this.state.buyerProjectionXaxis);
+          // console.log("Data: ", this.state.buyerProjectionOrderDataSet);
+        }
+      );
+    });
+  };
+
+  getProductQuantityProjectionMonthwise = () => {
+    axios.get(`/api/product/projection/monthwise`).then((res) => {
+      let tempDataset = res.data.dataList;
+
+      let histModelNameList = [];
+      let histQuantityList = [];
+
+      let tempQuantity = [];
+      tempDataset.map((dataset) => {
+        let tempPrice = {};
+
+        tempPrice.label = dataset.label.slice(0, 6);
+        tempPrice.data = dataset.productQuantityCountList;
+
+        tempQuantity.push(tempPrice);
+
+        let totalQuantity = dataset.productQuantityCountList.reduce((accumulator, currentValue) => {
+          return accumulator + currentValue;
+        }, 0);
+        histModelNameList.push(dataset.label.slice(0, 6));
+        histQuantityList.push(totalQuantity);
+      });
+      let histogramProduct = {
+        modelName: histModelNameList,
+        quantity: histQuantityList,
+      };
+      this.setState(
+        {
+          productQuantityProjectionDataSet: tempQuantity,
+          productProjectionAaxis: res.data.monthList,
+          histogramProduct,
+          histogramProductModel: histModelNameList,
+          histogramProductQuantity: histQuantityList,
+        },
+        () => {
+          console.log("Product Asis: ", this.state.productProjectionAaxis);
+          console.log("Product Data: ", this.state.productQuantityProjectionDataSet);
+          console.log("Histogram of Product: ", this.state.histogramProduct);
         }
       );
     });
@@ -112,6 +164,9 @@ class OrderSummary extends Component {
     if (userDetails.isAdmin === true) {
       this.getSellerOrderProjection();
       this.getBuyerOrderProjection();
+    }
+    if (userDetails.isCustomer === false) {
+      this.getProductQuantityProjectionMonthwise();
     }
   }
 
@@ -128,6 +183,11 @@ class OrderSummary extends Component {
       buyerProjectionOrderDataSet,
       buyerProjectionPriceDataSet,
       buyerProjectionXaxis,
+      productQuantityProjectionDataSet,
+      productProjectionAaxis,
+      histogramProduct,
+      histogramProductModel,
+      histogramProductQuantity,
     } = this.state;
 
     const { userDetails } = this.props;
@@ -138,7 +198,8 @@ class OrderSummary extends Component {
           <p>Total Order: {totalOrder}</p>
           <p>Average Order: {averageOrder}</p>
           <OrderSummaryCard totalOrder={totalOrder} averageOrder={averageOrder} />
-        </div> */}
+    </div> */}
+        <h2>Order Projection</h2>
         <div className="d-flex">
           <BarChart
             xAxis={[{ scaleType: "band", data: xAxis }]}
@@ -173,6 +234,29 @@ class OrderSummary extends Component {
             />
           </div>
         )}
+        {userDetails.isCustomer === false && <h2>Product Quantity Projection</h2>}
+        {userDetails.isCustomer === false && (
+          <div className="d-flex">
+            <BarChart
+              xAxis={[
+                {
+                  scaleType: "band",
+                  data: histogramProductModel,
+                },
+              ]}
+              series={[{ data: histogramProductQuantity }]}
+              width={500}
+              height={300}
+            />
+            <LineChart
+              width={500}
+              height={300}
+              series={productQuantityProjectionDataSet}
+              xAxis={[{ scaleType: "point", data: productProjectionAaxis }]}
+            />
+          </div>
+        )}
+
         {userDetails.isAdmin === true && <h2>Buyer Projection</h2>}
         {userDetails.isAdmin === true && (
           <div className="d-flex">
