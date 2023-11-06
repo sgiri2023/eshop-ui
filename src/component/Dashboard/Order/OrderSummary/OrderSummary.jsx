@@ -234,8 +234,10 @@ class OrderSummary extends Component {
             />
           </div>
         )}
-        {userDetails.isCustomer === false && <h2>Product Quantity Projection</h2>}
-        {userDetails.isCustomer === false && (
+        {productQuantityProjectionDataSet.length > 0 && userDetails.isCustomer === false && (
+          <h2>Product Quantity Projection</h2>
+        )}
+        {productQuantityProjectionDataSet.length > 0 && userDetails.isCustomer === false && (
           <div className="d-flex">
             <BarChart
               xAxis={[

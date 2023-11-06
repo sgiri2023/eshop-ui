@@ -84,11 +84,11 @@ class Order extends Component {
           className="mb-3 horizoontal-tab"
           style={{ marginBottom: "0px !important" }}
         >
-          <Tab eventKey="orderSummary" title="Order Summary">
-            <OrderSummary />
-          </Tab>
           <Tab eventKey="recentOrders" title="Recent Orders">
             <RecetnOrder />
+          </Tab>
+          <Tab eventKey="orderSummary" title="Order Summary">
+            <OrderSummary />
           </Tab>
         </Tabs>
       </div>
