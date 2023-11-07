@@ -28,6 +28,11 @@ class Product extends Component {
       productModelList: [],
       isProductModelListLoading: false,
       isAddProductModelOpen: false,
+
+      selectedCategoryId: 79,
+      selectedSubCategoryId: 84,
+      selectedBrandId: 100,
+      selectedModelId: "",
     };
   }
   getProductList = () => {
@@ -223,6 +228,10 @@ class Product extends Component {
       productModelList,
       isProductModelListLoading,
       isAddProductModelOpen,
+      selectedCategoryId,
+      selectedSubCategoryId,
+      selectedBrandId,
+      selectedModelId,
     } = this.state;
     const { userDetails } = this.props;
 
@@ -237,38 +246,54 @@ class Product extends Component {
         <div className="search-product d-flex align-items-center">
           <FormControl sx={{ m: 1, minWidth: 200 }}>
             <Select
-              value={10}
+              value={selectedCategoryId}
               onChange={this.handleChange}
               inputProps={{ "aria-label": "Without label" }}
             >
-              <MenuItem value={10}>Category</MenuItem>
+              <MenuItem value="">Select Category</MenuItem>
+              {productCategoryList.length > 0 &&
+                productCategoryList.map((product) => (
+                  <MenuItem value={product.id}>{product.displayName}</MenuItem>
+                ))}
             </Select>
           </FormControl>
           <FormControl sx={{ m: 1, minWidth: 200 }}>
             <Select
-              value={10}
+              value={selectedSubCategoryId}
               onChange={this.handleChange}
               inputProps={{ "aria-label": "Without label" }}
             >
-              <MenuItem value={10}>Sub Category</MenuItem>
+              <MenuItem value="">Select Sub-Category</MenuItem>
+              {productSubCategoryList.length > 0 &&
+                productSubCategoryList.map((product) => (
+                  <MenuItem value={product.id}>{product.displayName}</MenuItem>
+                ))}
             </Select>
           </FormControl>
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <Select
-              value={10}
+              value={selectedBrandId}
               onChange={this.handleChange}
               inputProps={{ "aria-label": "Without label" }}
             >
-              <MenuItem value={10}>Brand</MenuItem>
+              <MenuItem value="">Select Brand</MenuItem>
+              {productBrandList.length > 0 &&
+                productBrandList.map((product) => (
+                  <MenuItem value={product.id}>{product.brnadName}</MenuItem>
+                ))}
             </Select>
           </FormControl>
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <Select
-              value={10}
+              value={selectedModelId}
               onChange={this.handleChange}
               inputProps={{ "aria-label": "Without label" }}
             >
-              <MenuItem value={10}>Model</MenuItem>
+              <MenuItem value="">Select Model</MenuItem>
+              {productModelList.length > 0 &&
+                productModelList.map((product) => (
+                  <MenuItem value={product.id}>{product.modelName}</MenuItem>
+                ))}
             </Select>
           </FormControl>
           <Button onClick={() => this.handleRefresh()}>Search</Button>
