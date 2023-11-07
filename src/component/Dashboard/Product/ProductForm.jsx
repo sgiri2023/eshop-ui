@@ -88,6 +88,9 @@ class ProductFrom extends Component {
       stockCount: values.stockCount,
       ratings: 0,
       masterProductModelId: values.masterProductModelId,
+      masterProductBrandId: values.brandId,
+      masterProductSubCategoryId: values.subCategoryId,
+      masterProductCategoryId: values.categoryId,
     };
     setSubmitting(true);
     console.log("Payload: ", payload);
