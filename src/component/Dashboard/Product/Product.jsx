@@ -5,6 +5,11 @@ import { connect } from "react-redux";
 import { Table, Button, Image, Modal } from "react-bootstrap";
 import ProductFrom from "./ProductForm";
 import { FiRefreshCcw } from "react-icons/fi";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+
 // FiRefreshCcw
 class Product extends Component {
   constructor() {
@@ -193,6 +198,8 @@ class Product extends Component {
     this.getProductList();
   };
 
+  handleChange = () => {};
+
   componentDidMount() {
     this.getProductList();
 
@@ -224,8 +231,47 @@ class Product extends Component {
         {userDetails.isCustomer === false && (
           <Button onClick={() => this.handleAddProductModal()}>Add Product</Button>
         )}
-        <div className="refresh-icon">
+        {/* <div className="refresh-icon">
           <FiRefreshCcw onClick={() => this.handleRefresh()} />
+        </div> */}
+        <div className="search-product d-flex align-items-center">
+          <FormControl sx={{ m: 1, minWidth: 200 }}>
+            <Select
+              value={10}
+              onChange={this.handleChange}
+              inputProps={{ "aria-label": "Without label" }}
+            >
+              <MenuItem value={10}>Category</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ m: 1, minWidth: 200 }}>
+            <Select
+              value={10}
+              onChange={this.handleChange}
+              inputProps={{ "aria-label": "Without label" }}
+            >
+              <MenuItem value={10}>Sub Category</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <Select
+              value={10}
+              onChange={this.handleChange}
+              inputProps={{ "aria-label": "Without label" }}
+            >
+              <MenuItem value={10}>Brand</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <Select
+              value={10}
+              onChange={this.handleChange}
+              inputProps={{ "aria-label": "Without label" }}
+            >
+              <MenuItem value={10}>Model</MenuItem>
+            </Select>
+          </FormControl>
+          <Button onClick={() => this.handleRefresh()}>Search</Button>
         </div>
         <div className="product-list-container">
           {productList.length > 0 &&
