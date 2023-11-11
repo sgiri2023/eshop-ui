@@ -5,11 +5,13 @@ import axios from "./../../../../axiosClient/eaxios";
 import { formatDate, getInvoiceState, readableDateFormat } from "../../../../constant/Utils";
 import Dropdown from "react-bootstrap/Dropdown";
 import { CiMenuKebab } from "react-icons/ci";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 class AdminOrderTable extends Component {
   constructor() {
     super();
-    this.state = { data: "", invoiceList: [], activeKey: "orderSummary" };
+    this.state = { data: "", invoiceList: [], activeKey: "orderSummary", searchKey: "" };
   }
 
   getInvoiceList = () => {
@@ -62,14 +64,14 @@ class AdminOrderTable extends Component {
     );
   };
 
-  getAdminAllInvoiceList = () => {
+  getAdminAllInvoiceList = (searchkey) => {
     this.setState(
       {
         isLoading: true,
       },
       () => {
         axios
-          .get(`/api/invoice/admin/get-invoice-list`)
+          .get(`/api/invoice/list?userType=ADMIN&key=${searchkey}`)
           .then((res) => {
             console.log(".......Invoice List: ", res.data);
             this.setState({
@@ -183,16 +185,36 @@ class AdminOrderTable extends Component {
     );
   };
 
+  handleChnageKey = (key) => {
+    this.setState({
+      searchKey: key.trim(),
+    });
+  };
+
+  handleSearch = () => {
+    const { searchKey } = this.state;
+    if (this.props.userDetails.isAdmin === false) {
+      if (this.props.userDetails.isCustomer === true) {
+        this.getInvoiceList(searchKey);
+      } else {
+        this.getOrderList(searchKey);
+      }
+    } else {
+      this.getAdminAllInvoiceList(searchKey);
+    }
+  };
+
   componentDidMount() {
+    const { searchKey } = this.state;
     console.log(".......Order Table Component Mounted:", this.props);
     if (this.props.userDetails.isAdmin === false) {
       if (this.props.userDetails.isCustomer === true) {
-        this.getInvoiceList();
+        this.getInvoiceList(searchKey);
       } else {
-        this.getOrderList();
+        this.getOrderList(searchKey);
       }
     } else {
-      this.getAdminAllInvoiceList();
+      this.getAdminAllInvoiceList(searchKey);
     }
   }
 
@@ -200,6 +222,20 @@ class AdminOrderTable extends Component {
     const { invoiceList } = this.state;
     return (
       <div className="order-table-container ">
+        <div className="d-flex">
+          {" "}
+          <TextField
+            id="outlined-basic"
+            label="Search"
+            variant="outlined"
+            onChange={(e) => {
+              this.handleChnageKey(e.target.value);
+            }}
+          />
+          <Button variant="contained" onClick={() => this.handleSearch()}>
+            Search
+          </Button>
+        </div>
         <div className="cus-table-header">
           <div className="header-item">Order Id</div>
           <div className="header-item">Buyer</div>
