@@ -14,64 +14,15 @@ class AdminOrderTable extends Component {
     this.state = { data: "", invoiceList: [], activeKey: "orderSummary", searchKey: "" };
   }
 
-  getInvoiceList = () => {
+  getAdminAllInvoiceList = (userType, searchkey) => {
+    const { searchKey } = this.state;
     this.setState(
       {
         isLoading: true,
       },
       () => {
         axios
-          .get(`/api/invoice/buyer/get-invoice-list`)
-          .then((res) => {
-            console.log(".......Invoice List: ", res.data);
-            this.setState({
-              invoiceList: res.data,
-              isLoading: false,
-            });
-          })
-          .catch((err) => {
-            console.log("Error: ", err);
-            this.setState({
-              isLoading: false,
-            });
-          });
-      }
-    );
-  };
-
-  getOrderList = () => {
-    this.setState(
-      {
-        isLoading: true,
-      },
-      () => {
-        axios
-          .get(`/api/invoice/seller/get-invoice-list`)
-          .then((res) => {
-            console.log(".......Order List: ", res.data);
-            this.setState({
-              invoiceList: res.data,
-              isLoading: false,
-            });
-          })
-          .catch((err) => {
-            console.log("Error: ", err);
-            this.setState({
-              isLoading: false,
-            });
-          });
-      }
-    );
-  };
-
-  getAdminAllInvoiceList = (searchkey) => {
-    this.setState(
-      {
-        isLoading: true,
-      },
-      () => {
-        axios
-          .get(`/api/invoice/list?userType=ADMIN&key=${searchkey}`)
+          .get(`/api/invoice/list?userType=${userType}&key=${searchkey}`)
           .then((res) => {
             console.log(".......Invoice List: ", res.data);
             this.setState({
@@ -90,6 +41,7 @@ class AdminOrderTable extends Component {
   };
 
   handleInvoiceStateUpdate = (invoiceId, invoiceState) => {
+    const { searchKey } = this.state;
     let payload = {
       invoiceState: invoiceState,
     };
@@ -101,15 +53,7 @@ class AdminOrderTable extends Component {
         axios
           .put(`/api/invoice/update-state/${invoiceId}`, payload)
           .then((res) => {
-            if (this.props.userDetails.isAdmin === false) {
-              if (this.props.userDetails.isCustomer === true) {
-                this.getInvoiceList();
-              } else {
-                this.getOrderList();
-              }
-            } else {
-              this.getAdminAllInvoiceList();
-            }
+            this.getAdminAllInvoiceList("ADMIN", searchKey);
           })
           .catch((err) => {
             console.log("Error: ", err);
@@ -122,6 +66,7 @@ class AdminOrderTable extends Component {
   };
 
   handleInvoicePaymentToSeller = (invoiceId, invoiceState) => {
+    const { searchKey } = this.state;
     let payload = {
       invoiceState: invoiceState,
     };
@@ -133,15 +78,7 @@ class AdminOrderTable extends Component {
         axios
           .put(`/api/invoice/make-payment/${invoiceId}`, payload)
           .then((res) => {
-            if (this.props.userDetails.isAdmin === false) {
-              if (this.props.userDetails.isCustomer === true) {
-                this.getInvoiceList();
-              } else {
-                this.getOrderList();
-              }
-            } else {
-              this.getAdminAllInvoiceList();
-            }
+            this.getAdminAllInvoiceList("ADMIN", searchKey);
           })
           .catch((err) => {
             console.log("Error: ", err);
@@ -154,6 +91,7 @@ class AdminOrderTable extends Component {
   };
 
   handleRefundInvoicePaymentToBuyer = (invoiceId, invoiceState) => {
+    const { searchKey } = this.state;
     let payload = {
       invoiceState: invoiceState,
     };
@@ -165,15 +103,7 @@ class AdminOrderTable extends Component {
         axios
           .put(`/api/invoice/refund/${invoiceId}`, payload)
           .then((res) => {
-            if (this.props.userDetails.isAdmin === false) {
-              if (this.props.userDetails.isCustomer === true) {
-                this.getInvoiceList();
-              } else {
-                this.getOrderList();
-              }
-            } else {
-              this.getAdminAllInvoiceList();
-            }
+            this.getAdminAllInvoiceList("ADMIN", searchKey);
           })
           .catch((err) => {
             console.log("Error: ", err);
@@ -193,29 +123,13 @@ class AdminOrderTable extends Component {
 
   handleSearch = () => {
     const { searchKey } = this.state;
-    if (this.props.userDetails.isAdmin === false) {
-      if (this.props.userDetails.isCustomer === true) {
-        this.getInvoiceList(searchKey);
-      } else {
-        this.getOrderList(searchKey);
-      }
-    } else {
-      this.getAdminAllInvoiceList(searchKey);
-    }
+    this.getAdminAllInvoiceList("ADMIN", searchKey);
   };
 
   componentDidMount() {
     const { searchKey } = this.state;
     console.log(".......Order Table Component Mounted:", this.props);
-    if (this.props.userDetails.isAdmin === false) {
-      if (this.props.userDetails.isCustomer === true) {
-        this.getInvoiceList(searchKey);
-      } else {
-        this.getOrderList(searchKey);
-      }
-    } else {
-      this.getAdminAllInvoiceList(searchKey);
-    }
+    this.getAdminAllInvoiceList("ADMIN", searchKey);
   }
 
   render() {

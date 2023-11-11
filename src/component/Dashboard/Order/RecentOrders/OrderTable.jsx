@@ -5,85 +5,14 @@ import axios from "./../../../../axiosClient/eaxios";
 import { formatDate, getInvoiceState, readableDateFormat } from "../../../../constant/Utils";
 import Dropdown from "react-bootstrap/Dropdown";
 import { CiMenuKebab } from "react-icons/ci";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+
 class OrderTable extends Component {
   constructor() {
     super();
-    this.state = { data: "", invoiceList: [], activeKey: "orderSummary" };
+    this.state = { data: "", invoiceList: [], activeKey: "orderSummary", searchKey: "" };
   }
-  getInvoiceList = () => {
-    this.setState(
-      {
-        isLoading: true,
-      },
-      () => {
-        axios
-          .get(`/api/invoice/buyer/get-invoice-list`)
-          .then((res) => {
-            console.log(".......Invoice List: ", res.data);
-            this.setState({
-              invoiceList: res.data,
-              isLoading: false,
-            });
-          })
-          .catch((err) => {
-            console.log("Error: ", err);
-            this.setState({
-              isLoading: false,
-            });
-          });
-      }
-    );
-  };
-
-  getOrderList = () => {
-    this.setState(
-      {
-        isLoading: true,
-      },
-      () => {
-        axios
-          .get(`/api/invoice/seller/get-invoice-list`)
-          .then((res) => {
-            console.log(".......Order List: ", res.data);
-            this.setState({
-              invoiceList: res.data,
-              isLoading: false,
-            });
-          })
-          .catch((err) => {
-            console.log("Error: ", err);
-            this.setState({
-              isLoading: false,
-            });
-          });
-      }
-    );
-  };
-
-  getAdminAllInvoiceList = () => {
-    this.setState(
-      {
-        isLoading: true,
-      },
-      () => {
-        axios
-          .get(`/api/invoice/admin/get-invoice-list`)
-          .then((res) => {
-            console.log(".......Invoice List: ", res.data);
-            this.setState({
-              invoiceList: res.data,
-              isLoading: false,
-            });
-          })
-          .catch((err) => {
-            console.log("Error: ", err);
-            this.setState({
-              isLoading: false,
-            });
-          });
-      }
-    );
-  };
 
   handleInvoiceStateUpdate = (invoiceId, invoiceState) => {
     let payload = {
@@ -97,15 +26,8 @@ class OrderTable extends Component {
         axios
           .put(`/api/invoice/update-state/${invoiceId}`, payload)
           .then((res) => {
-            if (this.props.userDetails.isAdmin === false) {
-              if (this.props.userDetails.isCustomer === true) {
-                this.getInvoiceList();
-              } else {
-                this.getOrderList();
-              }
-            } else {
-              this.getAdminAllInvoiceList();
-            }
+            const { searchKey } = this.state;
+            this.fetchInvoiceList("BUYER", searchKey);
           })
           .catch((err) => {
             console.log("Error: ", err);
@@ -117,21 +39,69 @@ class OrderTable extends Component {
     );
   };
 
+  fetchInvoiceList = (userType, searchkey) => {
+    const { searchKey } = this.state;
+    this.setState(
+      {
+        isLoading: true,
+      },
+      () => {
+        axios
+          .get(`/api/invoice/list?userType=${userType}&key=${searchkey}`)
+          .then((res) => {
+            console.log(".......Invoice List: ", res.data);
+            this.setState({
+              invoiceList: res.data,
+              isLoading: false,
+            });
+          })
+          .catch((err) => {
+            console.log("Error: ", err);
+            this.setState({
+              isLoading: false,
+            });
+          });
+      }
+    );
+  };
+
+  handleChnageKey = (key) => {
+    this.setState({
+      searchKey: key.trim(),
+    });
+  };
+
+  handleSearch = () => {
+    const { searchKey } = this.state;
+    this.fetchInvoiceList("BUYER", searchKey);
+  };
+
   componentDidMount() {
-    console.log(".......Order Table Component Mounted:", this.props);
-    if (this.props.userDetails.isCustomer === true) {
-      this.getInvoiceList();
-    } else {
-      this.getOrderList();
-    }
+    const { searchKey } = this.state;
+    this.fetchInvoiceList("BUYER", searchKey);
   }
 
   render() {
     const { invoiceList } = this.state;
     return (
       <div className="order-table-container ">
+        <div className="d-flex">
+          {" "}
+          <TextField
+            id="outlined-basic"
+            label="Search"
+            variant="outlined"
+            onChange={(e) => {
+              this.handleChnageKey(e.target.value);
+            }}
+          />
+          <Button variant="contained" onClick={() => this.handleSearch()}>
+            Search
+          </Button>
+        </div>
         <div className="cus-table-header">
           <div className="header-item">Order Id</div>
+          <div className="header-item">Buyer</div>
           <div className="header-item">Seller</div>
           <div className="header-item">Item Name</div>
           <div className="header-item">Total Price</div>
@@ -146,6 +116,7 @@ class OrderTable extends Component {
             ? invoiceList.map((invoice) => (
                 <div className="cus-table-row">
                   <div className="body-item break-line">{invoice.orderId}</div>
+                  <div className="body-item break-line">{invoice.buyerName}</div>
                   <div className="body-item">{invoice.productResponse.sellerName}</div>
                   <div className="body-item model-section">
                     <img src={invoice.productResponse.productImageUrl} className="model-image" />{" "}
